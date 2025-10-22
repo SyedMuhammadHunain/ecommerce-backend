@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from 'src/modules/user.module';
 import { AuthModule } from 'src/modules/auth.module';
 import { ProductModule } from 'src/modules/product.module';
@@ -18,7 +18,13 @@ import { StripeModule } from 'src/modules/stripe.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI', ''),
+      }),
+      inject: [ConfigService],
+    }),
     UserModule,
     AuthModule,
     ProductModule,
