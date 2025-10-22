@@ -1,4 +1,4 @@
-import { Roles } from 'src/enums/roles.enums';
+import { Roles } from '../enums/roles.enums';
 import { IsNotEmpty, IsEnum, IsEmail } from 'class-validator';
 
 export class UpdateRoleDto {

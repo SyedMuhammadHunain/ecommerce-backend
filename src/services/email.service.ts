@@ -6,11 +6,11 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Auth } from 'src/models/auth.schema';
+import { Auth } from '../models/auth.schema';
 import { MailerService } from '@nestjs-modules/mailer';
 import { authenticator } from 'otplib';
-import { ResendOtpDto } from 'src/dtos/resendOtp.dto';
-import { LoginDto } from 'src/dtos/login.dto';
+import { ResendOtpDto } from '../dtos/resendOtp.dto';
+import { LoginDto } from '../dtos/login.dto';
 
 @Injectable()
 export class EmailService {

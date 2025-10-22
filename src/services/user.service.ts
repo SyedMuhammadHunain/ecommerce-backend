@@ -3,14 +3,14 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
-import { User } from 'src/models/user.schema';
+import { User } from '../models/user.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { SignUpDto } from 'src/dtos/signup.dto';
+import { SignUpDto } from '../dtos/signup.dto';
 import * as bcrypt from 'bcrypt';
 import { Logger } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Roles } from 'src/enums/roles.enums';
+import { Roles } from '../enums/roles.enums';
 
 @Injectable()
 export class UserService {

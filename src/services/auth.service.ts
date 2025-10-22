@@ -1,18 +1,18 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User, UserDocument } from 'src/models/user.schema';
+import { User, UserDocument } from '../models/user.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
-import { LoginDto } from 'src/dtos/login.dto';
-import { Auth } from 'src/models/auth.schema';
-import { EmailService } from 'src/services/email.service';
+import { LoginDto } from '../dtos/login.dto';
+import { Auth } from '../models/auth.schema';
+import { EmailService } from '../services/email.service';
 import { JwtService } from '@nestjs/jwt';
-import { RefreshTokenDto } from 'src/dtos/refreshToken.dto';
-import { ForgotPasswordDto } from 'src/dtos/forgot-password.dto';
+import { RefreshTokenDto } from '../dtos/refreshToken.dto';
+import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
 import cryptoRandomString from 'crypto-random-string';
-import { ResetPasswordDto } from 'src/dtos/reset-password.dto';
+import { ResetPasswordDto } from '../dtos/reset-password.dto';
 
 @Injectable()
 export class AuthService {

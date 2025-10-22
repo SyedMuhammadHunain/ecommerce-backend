@@ -7,17 +7,17 @@ import {
   UseGuards,
   UnauthorizedException,
 } from '@nestjs/common';
-import { SignUpDto } from 'src/dtos/signup.dto';
-import { AuthService } from 'src/services/auth.service';
-import { LoginDto } from 'src/dtos/login.dto';
-import { EmailService } from 'src/services/email.service';
-import { UserService } from 'src/services/user.service';
-import { ResendOtpDto } from 'src/dtos/resendOtp.dto';
-import { RefreshTokenDto } from 'src/dtos/refreshToken.dto';
-import { ForgotPasswordDto } from 'src/dtos/forgot-password.dto';
-import { ResetPasswordDto } from 'src/dtos/reset-password.dto';
-import { Public } from 'src/common/decorators/public.decorators';
-import { AuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { SignUpDto } from '../dtos/signup.dto';
+import { AuthService } from '../services/auth.service';
+import { LoginDto } from '../dtos/login.dto';
+import { EmailService } from '../services/email.service';
+import { UserService } from '../services/user.service';
+import { ResendOtpDto } from '../dtos/resendOtp.dto';
+import { RefreshTokenDto } from '../dtos/refreshToken.dto';
+import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
+import { ResetPasswordDto } from '../dtos/reset-password.dto';
+import { Public } from '../common/decorators/public.decorators';
+import { AuthGuard } from '../common/guards/jwt-auth.guard';
 
 @Controller('auth')
 @UseGuards(AuthGuard)

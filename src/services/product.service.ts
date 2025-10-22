@@ -5,14 +5,14 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Product } from 'src/models/product.schema';
+import { Product } from '../models/product.schema';
 import { Model } from 'mongoose';
-import { ProductDto } from 'src/dtos/product.dto';
+import { ProductDto } from '../dtos/product.dto';
 // import { UpdatedProductDto } from 'src/dtos/updatedProduct.dto';
-import { User } from 'src/models/user.schema';
-import { Roles } from 'src/enums/roles.enums';
+import { User } from '../models/user.schema';
+import { Roles } from '../enums/roles.enums';
 import { Types } from 'mongoose';
-import { UpdatedProductDto } from 'src/dtos/updatedProduct.dto';
+import { UpdatedProductDto } from '../dtos/updatedProduct.dto';
 
 @Injectable()
 export class ProductService {

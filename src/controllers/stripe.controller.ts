@@ -1,10 +1,10 @@
 import { Controller, Post, Body, Req, UseGuards } from '@nestjs/common';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { AuthGuard } from 'src/common/guards/jwt-auth.guard';
-import { CustomRequest } from 'src/interfaces/request.interface';
-import { StripeService } from 'src/services/stripe.service';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { AuthGuard } from '../common/guards/jwt-auth.guard';
+import { CustomRequest } from '../interfaces/request.interface';
+import { StripeService } from '../services/stripe.service';
 import Stripe from 'stripe';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { Roles } from '../common/decorators/roles.decorator';
 
 @Controller('payment')
 @UseGuards(RolesGuard)

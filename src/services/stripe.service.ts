@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import Stripe from 'stripe';
 import { ConfigService } from '@nestjs/config';
 import { InternalServerErrorException } from '@nestjs/common';
-import { OrderService } from 'src/services/order.service';
+import { OrderService } from '../services/order.service';
 
 @Injectable()
 export class StripeService {

@@ -1,11 +1,10 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ProductController } from 'src/controllers/product.controller';
-import { ProductService } from 'src/services/product.service';
-import { Product, ProductSchema } from 'src/models/product.schema';
-import { User, UserSchema } from 'src/models/user.schema';
-import { AuthModule } from 'src/modules/auth.module';
-
+import { ProductController } from '../controllers/product.controller';
+import { ProductService } from '../services/product.service';
+import { Product, ProductSchema } from '../models/product.schema';
+import { User, UserSchema } from '../models/user.schema';
+import { AuthModule } from '../modules/auth.module';
 @Module({
   imports: [
     MongooseModule.forFeature([

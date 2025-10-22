@@ -1,10 +1,10 @@
 import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
-import { CheckoutService } from 'src/services/checkout.service';
-import { CheckoutDto } from 'src/dtos/checkout.dto';
-import { AuthGuard } from 'src/common/guards/jwt-auth.guard';
-import { CustomRequest } from 'src/interfaces/request.interface';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { CheckoutService } from '../services/checkout.service';
+import { CheckoutDto } from '../dtos/checkout.dto';
+import { AuthGuard } from '../common/guards/jwt-auth.guard';
+import { CustomRequest } from '../interfaces/request.interface';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
 
 @Controller('checkout')
 @UseGuards(RolesGuard)

@@ -1,10 +1,10 @@
 // src/controllers/cart.controller.ts
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { CartService } from 'src/services/cart.service';
-import { AddToCartDto } from 'src/dtos/addToCart.dto';
-import { AuthGuard } from 'src/common/guards/jwt-auth.guard';
-import { Cart } from 'src/models/cart.schema';
-import { CustomRequest } from 'src/interfaces/request.interface';
+import { CartService } from '../services/cart.service';
+import { AddToCartDto } from '../dtos/addToCart.dto';
+import { AuthGuard } from '../common/guards/jwt-auth.guard';
+import { Cart } from '../models/cart.schema';
+import { CustomRequest } from '../interfaces/request.interface';
 
 @Controller('cart')
 export class CartController {

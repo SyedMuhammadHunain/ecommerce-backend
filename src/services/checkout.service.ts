@@ -2,8 +2,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Checkout } from 'src/models/checkout.schema';
-import { CheckoutDto } from 'src/dtos/checkout.dto';
+import { Checkout } from '../models/checkout.schema';
+import { CheckoutDto } from '../dtos/checkout.dto';
 
 @Injectable()
 export class CheckoutService {

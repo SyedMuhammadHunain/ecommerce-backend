@@ -13,14 +13,14 @@ import {
   Delete,
   Patch,
 } from '@nestjs/common';
-import { Product } from 'src/models/product.schema';
-import { ProductDto } from 'src/dtos/product.dto';
-import { ProductService } from 'src/services/product.service';
+import { Product } from '../models/product.schema';
+import { ProductDto } from '../dtos/product.dto';
+import { ProductService } from '../services/product.service';
 // import { UpdatedProductDto } from 'src/dtos/updatedProduct.dto';
-import { AuthGuard } from 'src/common/guards/jwt-auth.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { RolesGuard } from 'src/common/guards/roles.guard';
-import { UpdatedProductDto } from 'src/dtos/updatedProduct.dto';
+import { AuthGuard } from '../common/guards/jwt-auth.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { UpdatedProductDto } from '../dtos/updatedProduct.dto';
 
 @Controller('product')
 @UseGuards(AuthGuard, RolesGuard)
