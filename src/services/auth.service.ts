@@ -11,7 +11,6 @@ import { RefreshTokenDto } from '../dtos/refreshToken.dto';
 import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
 import { NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
-import cryptoRandomString from 'crypto-random-string';
 import { ResetPasswordDto } from '../dtos/reset-password.dto';
 
 @Injectable()
@@ -189,6 +188,7 @@ export class AuthService {
   }
 
   async generatePasswordResetToken(): Promise<string> {
+    const cryptoRandomString = (await import('crypto-random-string')).default;
     const resetToken = cryptoRandomString({ length: 30, type: 'alphanumeric' });
     return resetToken;
   }
