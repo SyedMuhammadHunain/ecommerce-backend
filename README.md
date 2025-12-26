@@ -175,3 +175,25 @@ cd ecommerce-backend
 # 3. Install all project dependencies via npm
 npm install
 ```
+
+<details>
+<summary><h3 style="display:inline-block">🔐 Setup Secrets (Environment Variables)</h3></summary>
+
+<p>⚠️ <strong>Crucial Step: Set up your environment variables before running the app.</strong></p>
+
+**1. Create the file:**
+Create a file named `.env` in the root directory of the project (next to `package.json`).
+
+**2. Add the variables:**
+Copy the contents of `.env.example` (if it exists) into your new `.env` file, or copy the structure below and fill in your real values:
+
+```bash
+# .env file content example
+
+PORT=3000
+DATABASE_URL="mongodb://localhost:27017/your-db-name"
+JWT_SECRET="your_super_secret_key"
+API_KEY="your_api_key_here"
+```
+
+
