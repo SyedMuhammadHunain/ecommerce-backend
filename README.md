@@ -175,9 +175,10 @@ cd ecommerce-backend
 # 3. Install all project dependencies via npm
 npm install
 ```
+</details>
 
 <details>
-<summary><h3 style="display:inline-block">🔐 Setup Secrets (Environment Variables)</h3></summary>
+<summary><h3 style="display:inline-block">🔐 Step 3: Setup Secrets (Environment Variables)</h3></summary>
 
 <p>⚠️ <strong>Crucial Step: Set up your environment variables before running the app.</strong></p>
 
@@ -195,5 +196,5 @@ DATABASE_URL="mongodb://localhost:27017/your-db-name"
 JWT_SECRET="your_super_secret_key"
 API_KEY="your_api_key_here"
 ```
-
+</details>
 
