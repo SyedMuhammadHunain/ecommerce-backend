@@ -290,6 +290,9 @@ src/
 <a href="https://www.linkedin.com/in/syedmuhammadhunain">
   <img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin" alt="LinkedIn">
 </a>
+<a href="https://www.instagram.com/hunain__rizwan/">
+  <img src="https://img.shields.io/badge/Instagram-Connect-E4405F?style=for-the-badge&logo=Instagram" alt="Instagram">
+</a>
 
 <br/>
 <br/>
