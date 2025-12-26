@@ -120,3 +120,89 @@ Click on the sections below to expand and view details about the modules.
 <br/>
 
 ---
+
+<div align="center">
+
+## 🚀 Setup Guide
+
+<a href="https://git.io/typing-svg">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=500&size=22&pause=1000&color=34D399&center=true&vCenter=true&width=600&lines=Initializing+Environment...;Loading+Prerequisites...;follow+the+steps+below+to+launch!+🚀" alt="Setup Animation" />
+</a>
+
+<p>Follow these five steps to get your local backend instance running.</p>
+
+</div>
+
+<br/>
+
+<details open>
+<summary>
+  <h3 style="display:inline-block">🔹 Step 1: Engine Check (Prerequisites)</h3>
+  <p>Ensure your machine has the necessary core components installed.</p>
+</summary>
+
+<div align="center">
+
+| Component | Requirement | Status Check Command |
+| :--- | :--- | :--- |
+| **Node.js** | `v18.x` or higher | `node -v` |
+| **npm** | `v9.x` or higher | `npm -v` |
+| **MongoDB** | Running Locally or Atlas URI | `mongod --version` |
+| **Git** | Latest Stable | `git --version` |
+
+<br>
+
+<img src="https://img.shields.io/badge/Node.js-Requires_v18+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="NodeJS Version" />
+<img src="https://img.shields.io/badge/MongoDB-Database_Ready-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB Ready" />
+
+</div>
+<br>
+</details>
+
+<details>
+<summary>
+  <h3 style="display:inline-block">🔹 Step 2: Acquire Target (Clone & Install)</h3>
+  <p>Download the codebase and install necessary dependencies.</p>
+</summary>
+
+```bash
+# 1. Clone the repository to your local machine
+git clone https://github.com/SyedMuhammadHunain/E-Commerce-Backend-Application-NestJS-TypeScript-MongoDB.git
+
+# 2. Navigate into the project directory
+cd ecommerce-backend
+
+# 3. Install all project dependencies via npm
+npm install
+```
+
+<details> <summary> <h3 style="display:inline-block">🔹 Step 3: Environmental Controls (Config Secrets)</h3> <p>⚠️ Crucial Step: Set up your environment variables for DB and external services.</p> </summary>
+
+cp .env.example .env
+
+# ==============================================
+# 🔐 APP SECRETS & CONFIGURATION
+# ==============================================
+
+# --- Database (Required) ---
+# Use mongodb://localhost:27017/your_db_name for local DB
+# Or paste your MongoDB Atlas Connection String here.
+MONGO_URI=mongodb://localhost:27017/ecommerce_db
+
+# --- Authentication (Required) ---
+# Generate a strong, random string for security.
+JWT_SECRET=put_a_very_long_random_secure_string_here
+JWT_EXPIRATION=1d
+
+# --- Stripe Payments (Required for Checkout) ---
+# Get these from your Stripe Developer Dashboard.
+STRIPE_SECRET_KEY=YOUR_STRIPE_SECRET_KEY
+STRIPE_PUBLISHABLE_KEY=YOUR_STRIPE_PUBLISHABLE_KEY
+
+# --- Email Service (Optional for Dev, Required for Auth Emails) ---
+# E.g., Using Mailtrap.io for safe local testing.
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USER=your_mailtrap_user
+MAIL_PASS=your_mailtrap_password
+MAIL_FROM=no-reply@ecommerceapi.com
