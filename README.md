@@ -50,7 +50,7 @@ This project is a robust, production-ready backend service for a modern e-commer
 Don't just read about it—interact with the API directly in your browser.
 
 <div align="center">
-  <a href="http://localhost:3000/api" target="_blank">
+  <a href="[http://localhost:3000/api](https://ecommerce-backend-o69ecy02b-huns-projects-38dc9d9a.vercel.app/)" target="_blank">
     <img src="https://img.shields.io/badge/OPEN_SWAGGER_UI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" height="50" alt="Open Swagger API" />
   </a>
 </div>
