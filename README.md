@@ -177,24 +177,49 @@ npm install
 ```
 </details>
 
-<details>
-<summary><h3 style="display:inline-block">🔐 Step 3: Setup Secrets (Environment Variables)</h3></summary>
-
-<p>⚠️ <strong>Crucial Step: Set up your environment variables before running the app.</strong></p>
+<details> <summary> <h3 style="display:inline-block">🔹 Step 3: Environmental Controls (Config Secrets)</h3> <p>⚠️ Crucial Step: Set up your environment variables for DB and external services.</p> </summary>
 
 **1. Create the file:**
-Create a file named `.env` in the root directory of the project (next to `package.json`).
+Create a file named `.env` in the root directory of the project.
 
-**2. Add the variables:**
-Copy the contents of `.env.example` (if it exists) into your new `.env` file, or copy the structure below and fill in your real values:
+**2. Fill in the secrets:**
 
 ```bash
-# .env file content example
+# ==============================================
+# 🔐 APP SECRETS & CONFIGURATION
+# ==============================================
 
-PORT=3000
-DATABASE_URL="mongodb://localhost:27017/your-db-name"
-JWT_SECRET="your_super_secret_key"
-API_KEY="your_api_key_here"
+# --- Database (Required) ---
+# Use mongodb://localhost:27017/your_db_name for local DB
+# Or paste your MongoDB Atlas Connection String here.
+MONGO_URI=mongodb://localhost:27017/ecommerce_db
+
+# --- Authentication (Required) ---
+# Generate a strong, random string for security.
+JWT_SECRET=put_a_very_long_random_secure_string_here
+JWT_EXPIRATION=1d
+
+# --- Stripe Payments (Required for Checkout) ---
+# Get these from your Stripe Developer Dashboard.
+STRIPE_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxxxxxx
+STRIPE_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxx
+
+# --- Email Service (Optional for Dev, Required for Auth Emails) ---
+# E.g., Using Mailtrap.io for safe local testing.
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USER=your_mailtrap_user
+MAIL_PASS=your_mailtrap_password
+MAIL_FROM=no-reply@ecommerceapi.com
 ```
 </details>
 
+<details> <summary> <h3 style="display:inline-block">🔹 Step 4: Run Application</h3> <p>Choose your desired mode to start the NestJS server.</p> </summary>
+  
+<div align="center">
+Mode,Command,Description
+🟢 Development,npm run start:dev,Recommended. Watches for file changes and auto-restarts.
+🟡 Standard,npm run start,Runs the app once without watching for changes.
+🔴 Production,npm run build && npm run start:prod,Builds the project to /dist and runs optimized code.
+</div>
+</details>
