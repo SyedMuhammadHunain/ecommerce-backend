@@ -129,7 +129,7 @@ Click on the sections below to expand and view details about the modules.
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=500&size=22&pause=1000&color=34D399&center=true&vCenter=true&width=600&lines=Initializing+Environment...;Loading+Prerequisites...;follow+the+steps+below+to+launch!+🚀" alt="Setup Animation" />
 </a>
 
-<p>Follow these five steps to get your local backend instance running.</p>
+<p>Follow the steps to get your local backend instance running.</p>
 
 </div>
 
@@ -214,12 +214,15 @@ MAIL_FROM=no-reply@ecommerceapi.com
 ```
 </details>
 
-<details> <summary> <h3 style="display:inline-block">🔹 Step 4: Run Application</h3> <p>Choose your desired mode to start the NestJS server.</p> </summary>
-  
-<div align="center">
-Mode,Command,Description
-🟢 Development,npm run start:dev,Recommended. Watches for file changes and auto-restarts.
-🟡 Standard,npm run start,Runs the app once without watching for changes.
-🔴 Production,npm run build && npm run start:prod,Builds the project to /dist and runs optimized code.
-</div>
+<details>
+<summary><h3 style="display:inline-block">🔹 Step 4: Run Application</h3></summary>
+
+Choose your desired mode to start the NestJS server.
+
+| Mode         | Command                         | Description                                                                 |
+|--------------|----------------------------------|-----------------------------------------------------------------------------|
+| 🟢 Development | `npm run start:dev`              | Recommended. Watches for file changes and auto-restarts.                   |
+| 🟡 Standard    | `npm run start`                  | Runs the app once without watching for changes.                             |
+| 🔴 Production  | `npm run build && npm run start:prod` | Builds the project to `/dist` and runs optimized production code.           |
+
 </details>
