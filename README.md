@@ -291,18 +291,6 @@ src/
 <br/>
 <br/>
 
-## 📈 Star History
-
-<a href="https://star-history.com/#SyedMuhammadHunain/ecommerce-backend&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=SyedMuhammadHunain/ecommerce-backend&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=SyedMuhammadHunain/ecommerce-backend&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=SyedMuhammadHunain/ecommerce-backend&type=Date" />
- </picture>
-</a>
-
-<br/>
-
 <p>Copyright © 2025 <a href="https://github.com/SyedMuhammadHunain">Syed Muhammad Hunain</a>.</p>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=80&section=footer"/>
