@@ -31,6 +31,13 @@ export class AuthGuard implements CanActivate {
     const request = context
       .switchToHttp()
       .getRequest<Request & { user?: any }>();
+
+    // for swagger and api docs
+    const requestPath = request.url;
+    if (requestPath.includes('/api') || requestPath.includes('/docs')) {
+      return true;
+    }
+
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
