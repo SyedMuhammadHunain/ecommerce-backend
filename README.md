@@ -12,8 +12,8 @@
   <br/>
 
   <p>
-    <img src="https://img.shields.io/github/package-json/v/SyedMuhammadHunain/E-Commerce-API-Application-NestJS-TypeScript-MongoDB?style=for-the-badge&color=E94E32&logo=nestjs" alt="Version">
-    <img src="https://img.shields.io/github/last-commit/SyedMuhammadHunain/E-Commerce-API-Application-NestJS-TypeScript-MongoDB?style=for-the-badge&color=blue&logo=git" alt="Last Commit">
+    <img src="https://img.shields.io/github/package-json/v/SyedMuhammadHunain/ecommerce-backend?style=for-the-badge&color=E94E32&logo=nestjs" alt="Version">
+    <img src="https://img.shields.io/github/last-commit/SyedMuhammadHunain/ecommerce-backend?style=for-the-badge&color=blue&logo=git" alt="Last Commit">
     <img src="https://img.shields.io/badge/Database-MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
   </p>
 
@@ -64,7 +64,11 @@ Don't just read about it—interact with the API directly in your browser.
 
 See the backend in action.
 <div align="center">
-https://github.com/user-attachments/assets/a224b694-301e-4aa8-9627-620f849dae17
+
+
+https://github.com/user-attachments/assets/4ab7bb72-4353-44e7-92f5-8ad3521917e7
+
+
 </div>
 
 <br/>
