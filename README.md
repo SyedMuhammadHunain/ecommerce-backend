@@ -253,3 +253,64 @@ src/
 └── 📜 main.ts          # 🚀 Application Entry Point
 ```
 </details>
+
+<br/>
+
+---
+
+<div align="center">
+
+## 🤝 Connect & Support
+
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="200" alt="Coding Gif" />
+
+<p>If you found this project helpful, please give it a ⭐️ to show your support!</p>
+
+<a href="https://github.com/SyedMuhammadHunain/E-Commerce-Backend-Application-NestJS-TypeScript-MongoDB/stargazers">
+  <img src="https://img.shields.io/github/stars/SyedMuhammadHunain/E-Commerce-Backend-Application-NestJS-TypeScript-MongoDB?style=for-the-badge&color=yellow&logo=star&label=Star%20Us" alt="GitHub Stars">
+</a>
+<a href="https://github.com/SyedMuhammadHunain/E-Commerce-Backend-Application-NestJS-TypeScript-MongoDB/fork">
+  <img src="https://img.shields.io/github/forks/SyedMuhammadHunain/E-Commerce-Backend-Application-NestJS-TypeScript-MongoDB?style=for-the-badge&color=orange&logo=git&label=Fork" alt="GitHub Forks">
+</a>
+
+<br/>
+<br/>
+
+### 👤 Author: Syed Muhammad Hunain
+
+<a href="https://github.com/SyedMuhammadHunain">
+  <img src="https://img.shields.io/badge/GitHub-Profile-black?style=for-the-badge&logo=github" alt="GitHub">
+</a>
+<a href="mailto:hunain.rizwan.ofc@gmail.com">
+  <img src="https://img.shields.io/badge/Email-Contact_Me-red?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+</a>
+<a href="https://www.linkedin.com/in/syed-muhammad-hunain-11663b285/">
+  <img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin" alt="LinkedIn">
+</a>
+
+<br/>
+<br/>
+
+## 📈 Star History
+
+<a href="https://star-history.com/#SyedMuhammadHunain/E-Commerce-Backend-Application-NestJS-TypeScript-MongoDB&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=SyedMuhammadHunain/E-Commerce-Backend-Application-NestJS-TypeScript-MongoDB&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=SyedMuhammadHunain/E-Commerce-Backend-Application-NestJS-TypeScript-MongoDB&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=SyedMuhammadHunain/E-Commerce-Backend-Application-NestJS-TypeScript-MongoDB&type=Date" />
+ </picture>
+</a>
+
+<br/>
+
+## 📜 License
+
+<p>
+  <img src="https://img.shields.io/github/license/SyedMuhammadHunain/E-Commerce-Backend-Application-NestJS-TypeScript-MongoDB?style=for-the-badge&color=blueviolet" alt="License">
+</p>
+
+<p>Copyright © 2025 <a href="https://github.com/SyedMuhammadHunain">Syed Muhammad Hunain</a>.</p>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=60&section=footer"/>
+
+</div>
