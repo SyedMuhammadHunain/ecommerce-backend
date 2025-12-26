@@ -175,34 +175,3 @@ cd ecommerce-backend
 # 3. Install all project dependencies via npm
 npm install
 ```
-
-<details> <summary> <h3 style="display:inline-block">🔹 Step 3: Environmental Controls (Config Secrets)</h3> <p>⚠️ Crucial Step: Set up your environment variables for DB and external services.</p> </summary>
-
-cp .env.example .env
-
-# ==============================================
-# 🔐 APP SECRETS & CONFIGURATION
-# ==============================================
-
-# --- Database (Required) ---
-# Use mongodb://localhost:27017/your_db_name for local DB
-# Or paste your MongoDB Atlas Connection String here.
-MONGO_URI=mongodb://localhost:27017/ecommerce_db
-
-# --- Authentication (Required) ---
-# Generate a strong, random string for security.
-JWT_SECRET=put_a_very_long_random_secure_string_here
-JWT_EXPIRATION=1d
-
-# --- Stripe Payments (Required for Checkout) ---
-# Get these from your Stripe Developer Dashboard.
-STRIPE_SECRET_KEY=YOUR_STRIPE_SECRET_KEY
-STRIPE_PUBLISHABLE_KEY=YOUR_STRIPE_PUBLISHABLE_KEY
-
-# --- Email Service (Optional for Dev, Required for Auth Emails) ---
-# E.g., Using Mailtrap.io for safe local testing.
-MAIL_HOST=smtp.mailtrap.io
-MAIL_PORT=2525
-MAIL_USER=your_mailtrap_user
-MAIL_PASS=your_mailtrap_password
-MAIL_FROM=no-reply@ecommerceapi.com
