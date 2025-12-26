@@ -32,18 +32,6 @@ export class AuthGuard implements CanActivate {
       .switchToHttp()
       .getRequest<Request & { user?: any }>();
 
-    // for swagger and api docs
-   const path = request.originalUrl || request.url;
-    
-    // Allow Swagger HTML, Swagger JSON, and Favicons
-    if (
-      path.includes('/api') || 
-      path.includes('/docs') || 
-      path.includes('-json') // This covers /api-json (required for Swagger to load data)
-    ) {
-      return true;
-    }
-
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
