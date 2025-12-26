@@ -226,3 +226,30 @@ Choose your desired mode to start the NestJS server.
 | 🔴 Production  | `npm run build && npm run start:prod` | Builds the project to `/dist` and runs optimized production code.           |
 
 </details>
+
+## 📁 Project Structure
+
+<details open>
+<summary><strong>src/</strong> — Core application source</summary>
+
+```text
+src/
+├── 📂 common/          # 🛡️ Guards, custom decorators, filters
+├── 📂 config/          # ⚙️ Configuration files (JWT, Stripe, Mailer setup)
+├── 📂 controllers/     # 🎮 API Route Handlers (REST Endpoints)
+├── 📂 dtos/            # 📄 Data Transfer Objects (Validation Schemas)
+├── 📂 enums/           # 🔢 TypeScript Enums (Roles, Statuses)
+├── 📂 interfaces/      # 📐 TypeScript Interfaces (Models, Requests)
+├── 📂 models/          # 🗄️ Mongoose Schemas & Documents
+├── 📂 modules/         # 🧩 Feature Modules (Core business domains)
+│   ├── 📦 auth/        # 🔐 Authentication & Authorization
+│   ├── 🛒 cart/        # 🧺 Cart management
+│   ├── 💳 checkout/    # 💼 Order checkout flow
+│   ├── 📦 order/       # 📑 Orders & transactions
+│   ├── 🛍️ product/     # 🏷️ Product catalog
+│   ├── 💰 stripe/      # 💸 Payment integration
+│   └── 👤 user/        # 🙍 User management
+├── 📂 services/        # 🧠 Business Logic layer
+└── 📜 main.ts          # 🚀 Application Entry Point
+```
+</details>
