@@ -45,19 +45,6 @@
 
 This project is a robust, production-ready backend service for a modern e-commerce platform. Built with the enterprise-grade **NestJS** framework and powered by **MongoDB** via Mongoose, it provides all core functionalities needed for a scalable online store, designed for seamless integration with an Angular frontend.
 
-### 🎮 Try the API (Interactive Swagger Docs)
-
-Don't just read about it—interact with the API directly in your browser.
-
-1. Start the server: `npm run start`
-2. Click the button below:
-
-<div align="center">
-  <a href="http://localhost:3000/api" target="_blank">
-    <img src="https://img.shields.io/badge/OPEN_SWAGGER_UI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" height="50" alt="Open Swagger API" />
-  </a>
-</div>
-
 <br/>
 
 ---
@@ -229,6 +216,19 @@ Choose your desired mode to start the NestJS server.
 | 🔴 Production  | `npm run build && npm run start:prod` | Builds the project to `/dist` and runs optimized production code.           |
 
 </details>
+
+### 🎮 Try the API (Interactive Swagger Docs)
+
+Don't just read about it—interact with the API directly in your browser.
+
+1. Start the server: `npm run start`
+2. Click the button below:
+
+<div align="center">
+  <a href="http://localhost:3000/api" target="_blank">
+    <img src="https://img.shields.io/badge/OPEN_SWAGGER_UI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black" height="50" alt="Open Swagger API" />
+  </a>
+</div>
 
 ## 📁 Project Structure
 
