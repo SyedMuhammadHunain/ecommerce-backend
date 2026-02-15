@@ -26,7 +26,7 @@
     "editor.suggest.showWords": false,
     "typescript.suggest.enabled": true,
     "javascript.suggest.enabled": true,
-    "editor.hover.enabled": true,
+    "editor.hover.enabled": "on",
     "editor.inlineSuggest.enabled": false,
     "editor.snippetSuggestions": "none",
     "editor.acceptSuggestionOnEnter": "off",

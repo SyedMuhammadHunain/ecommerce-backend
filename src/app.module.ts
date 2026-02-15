@@ -12,11 +12,17 @@ import { CartModule } from './modules/cart.module';
 import { CheckoutModule } from './modules/checkout.module';
 import { OrderModule } from './modules/order.module';
 import { StripeModule } from './modules/stripe.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 60000, // 60 seconds default TTL
+      max: 100, // Maximum number of items in cache
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -42,4 +48,4 @@ import { StripeModule } from './modules/stripe.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
