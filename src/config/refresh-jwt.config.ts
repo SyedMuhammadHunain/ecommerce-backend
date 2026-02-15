@@ -8,10 +8,10 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule.register({
       secret: process.env.REFRESH_JWT_SECRET,
       signOptions: {
-        expiresIn: process.env.REFRESH_JWT_EXPIRES_IN,
+        expiresIn: process.env.REFRESH_JWT_EXPIRES_IN as any,
       },
     }),
   ],
   exports: [JwtModule],
 })
-export class RefreshConfig {}
+export class RefreshConfig { }

@@ -17,7 +17,7 @@ export class UserService {
   constructor(
     @InjectModel('User') private userModel: Model<User>,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   async findByEmail(email: string): Promise<User | null> {
     return await this.userModel.findOne({ email }).exec();
@@ -65,8 +65,8 @@ export class UserService {
     await user.save();
 
     // Generate new tokens with updated role
-    const aT = await this.authService.generateToken(user);
-    const rT = await this.authService.generateRefreshToken(user);
+    const aT = await this.authService.generateToken(user as any);
+    const rT = await this.authService.generateRefreshToken(user as any);
 
     return {
       accessToken: aT,

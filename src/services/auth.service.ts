@@ -20,7 +20,7 @@ export class AuthService {
     @InjectModel('AuthCollections') private authModel: Model<Auth>,
     private emailService: EmailService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async login(
     logInDto: LoginDto,
@@ -79,7 +79,7 @@ export class AuthService {
 
     return this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
-      expiresIn: process.env.JWT_EXPIRES_IN,
+      expiresIn: process.env.JWT_EXPIRES_IN as any,
     });
   }
 
@@ -92,7 +92,7 @@ export class AuthService {
     };
     const refreshToken = this.jwtService.sign(payload, {
       secret: process.env.REFRESH_JWT_SECRET,
-      expiresIn: process.env.REFRESH_JWT_EXPIRES_IN,
+      expiresIn: process.env.REFRESH_JWT_EXPIRES_IN as any,
     });
 
     // Hash the refresh token
