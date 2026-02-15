@@ -87,7 +87,7 @@ export class ProductService {
 
     let products: Product[] = [];
     if (user.role === Roles.SELLER) {
-      products = await this.productModel.find({ seller: user._id });
+      products = await this.productModel.find({ userId: user._id });
     } else if (user.role === Roles.CUSTOMER) {
       products = await this.productModel.find();
     }
