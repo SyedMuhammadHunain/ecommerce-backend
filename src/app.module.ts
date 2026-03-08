@@ -13,12 +13,21 @@ import { CheckoutModule } from './modules/checkout.module';
 import { OrderModule } from './modules/order.module';
 import { StripeModule } from './modules/stripe.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ThrottlerModule.forRoot({
+    throttlers: [
+        {
+          ttl: 60,
+          limit: 10,
+        },
+      ],
+    }), 
     CacheModule.register({
       isGlobal: true,
       ttl: 60000, // 60 seconds default TTL
@@ -65,6 +74,10 @@ import { CacheModule } from '@nestjs/cache-manager';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })
