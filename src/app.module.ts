@@ -23,7 +23,7 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
     ThrottlerModule.forRoot({
     throttlers: [
         {
-          ttl: 60,
+          ttl: 60000,
           limit: 10,
         },
       ],
