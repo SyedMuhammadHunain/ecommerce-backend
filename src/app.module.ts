@@ -14,9 +14,13 @@ import { OrderModule } from './modules/order.module';
 import { StripeModule } from './modules/stripe.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
 
 @Module({
   imports: [
+    DevtoolsModule.register({
+	  http: process.env.NODE_ENV !== 'production',
+    }),  
     ConfigModule.forRoot({
       isGlobal: true,
     }),

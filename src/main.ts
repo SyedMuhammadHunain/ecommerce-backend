@@ -6,7 +6,9 @@ import * as compression from 'compression';
 import helmet from 'helmet';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    snapshot: true
+  });
 
   // Configuring Swagger API
   const config = new DocumentBuilder()
