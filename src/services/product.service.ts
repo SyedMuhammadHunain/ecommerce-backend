@@ -45,7 +45,7 @@ export class ProductService {
   // ──────────── CRUD Methods ────────────
 
   async create(productDto: ProductDto, userId: string): Promise<Product> {
-    const user = await this.userModel.findById(userId);
+    const user = await this.userModel.findById(userId).lean();
     if (!user) {
       throw new NotFoundException(
         'Account not found: User profile does not exist',
@@ -78,18 +78,18 @@ export class ProductService {
     }
     this.logger.log(`Cache MISS for ${cacheKey}`);
 
-    const user = await this.userModel.findById(userId);
+    const user = await this.userModel.findById(userId).lean();
     if (!user) {
       throw new NotFoundException(
         'Account not found: User profile does not exist',
       );
     }
 
-    let products: Product[] = [];
+    let products: any[] = [];
     if (user.role === Roles.SELLER) {
-      products = await this.productModel.find({ userId: user._id });
+      products = await this.productModel.find({ userId: user._id }).lean();
     } else if (user.role === Roles.CUSTOMER) {
-      products = await this.productModel.find();
+      products = await this.productModel.find().lean();
     }
 
     // Store in cache
@@ -109,17 +109,17 @@ export class ProductService {
     }
     this.logger.log(`Cache MISS for ${cacheKey}`);
 
-    const user = await this.userModel.findById(userId);
+    const user = await this.userModel.findById(userId).lean();
     if (!user) {
       throw new NotFoundException(
         'Account not found: User profile does not exist',
       );
     }
 
-    let product: Product | null = null;
+    let product: any = null;
 
     if (user.role === Roles.SELLER) {
-      product = await this.productModel.findById(productId);
+      product = await this.productModel.findById(productId).lean();
       if (!product) {
         throw new NotFoundException(
           'Product not found: Item does not exist in catalog',
@@ -131,7 +131,7 @@ export class ProductService {
         );
       }
     } else if (user.role === Roles.CUSTOMER) {
-      product = await this.productModel.findById(productId);
+      product = await this.productModel.findById(productId).lean();
       if (!product) {
         throw new NotFoundException(
           'Product not found: Item does not exist in catalog',
@@ -150,7 +150,7 @@ export class ProductService {
   }
 
   async deleteById(productId: string, userId: string): Promise<void> {
-    const user = await this.userModel.findById(userId);
+    const user = await this.userModel.findById(userId).lean();
     if (!user) {
       throw new NotFoundException(
         'Account not found: User profile does not exist',
@@ -160,7 +160,7 @@ export class ProductService {
       throw new ForbiddenException('Only sellers can delete products');
     }
 
-    const product = await this.productModel.findById(productId);
+    const product = await this.productModel.findById(productId).lean();
     if (!product) {
       throw new NotFoundException(
         'Product not found: Item does not exist in catalog',
@@ -184,7 +184,7 @@ export class ProductService {
     updatedProductDto: UpdatedProductDto,
     currentUserId: string,
   ): Promise<Product> {
-    const user = await this.userModel.findById(currentUserId);
+    const user = await this.userModel.findById(currentUserId).lean();
     if (!user) {
       throw new NotFoundException(
         'Account not found: User profile does not exist',
@@ -196,7 +196,7 @@ export class ProductService {
       );
     }
 
-    const product = await this.productModel.findById(productId);
+    const product = await this.productModel.findById(productId).lean();
     if (!product) {
       throw new NotFoundException(
         'Product not found: Item does not exist in catalog',

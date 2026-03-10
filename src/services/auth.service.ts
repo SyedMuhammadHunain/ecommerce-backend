@@ -26,7 +26,7 @@ export class AuthService {
     logInDto: LoginDto,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const { email, password } = logInDto;
-    const foundUser = await this.userModel.findOne({ email }).exec();
+    const foundUser = await this.userModel.findOne({ email }).lean().exec();
 
     if (!foundUser) {
       throw new UnauthorizedException(
@@ -166,7 +166,7 @@ export class AuthService {
     const { email } = forgotPasswordDto;
 
     // firstly find the user with the email
-    const user = await this.userModel.findOne({ email });
+    const user = await this.userModel.findOne({ email }).lean();
     if (!user) {
       throw new NotFoundException(
         'Account not found: No user registered with this email',
@@ -200,10 +200,11 @@ export class AuthService {
       .find({ passwordResetToken: { $exists: true } })
       .select(
         '+passwordResetToken +passwordResetTokenExpiresAt +hashedRefreshToken',
-      );
+      )
+      .lean();
 
     // Step 2: Iterate over the users and find a matching token
-    let matchedUser: UserDocument | null = null;
+    let matchedUser: (typeof users)[number] | null = null;
     for (const user of users) {
       if (user.passwordResetToken === token) {
         matchedUser = user;

@@ -20,12 +20,12 @@ export class UserService {
   ) { }
 
   async findByEmail(email: string): Promise<User | null> {
-    return await this.userModel.findOne({ email }).exec();
+    return await this.userModel.findOne({ email }).lean().exec();
   }
 
   async createUser(signUpDto: SignUpDto): Promise<User> {
     const { name, email, password } = signUpDto;
-    const existingUser = await this.userModel.findOne({ email }).exec();
+    const existingUser = await this.userModel.findOne({ email }).lean().exec();
 
     if (existingUser) {
       throw new ConflictException('User with this email already exists');

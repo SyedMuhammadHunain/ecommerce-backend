@@ -8,7 +8,7 @@ import { CustomRequest } from '../interfaces/request.interface';
 
 @Controller('cart')
 export class CartController {
-  constructor(private readonly cartService: CartService) {}
+  constructor(private readonly cartService: CartService) { }
 
   @UseGuards(AuthGuard)
   @Post('add-to-cart')
@@ -23,7 +23,7 @@ export class CartController {
 
   @UseGuards(AuthGuard)
   @Get()
-  getCart(@Req() req: CustomRequest): Promise<Cart | null> {
+  getCart(@Req() req: CustomRequest) {
     const userId = req.user.sub;
     return this.cartService.getCart(userId);
   }

@@ -7,7 +7,7 @@ import { Order } from '../models/order.schema';
 export class OrderService {
   constructor(
     @InjectModel('Order') private readonly orderModel: Model<Order>,
-  ) {}
+  ) { }
 
   // Create order in the database
   async createOrder(orderData: Partial<Order>): Promise<Order> {
@@ -29,7 +29,7 @@ export class OrderService {
   }
 
   // Find order by Stripe session ID
-  async findByStripeSessionId(sessionId: string): Promise<Order | null> {
-    return this.orderModel.findOne({ stripeSessionId: sessionId });
+  async findByStripeSessionId(sessionId: string) {
+    return this.orderModel.findOne({ stripeSessionId: sessionId }).lean();
   }
 }

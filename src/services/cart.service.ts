@@ -51,7 +51,7 @@ export class CartService {
     return cart;
   }
 
-  async getCart(userId: string): Promise<Cart | null> {
+  async getCart(userId: string) {
     const cacheKey = this.cartCacheKey(userId);
 
     // Check cache first
@@ -64,7 +64,8 @@ export class CartService {
 
     const cart = await this.cartModel
       .findOne({ userId: new Types.ObjectId(userId) })
-      .populate('items.productId');
+      .populate('items.productId')
+      .lean();
 
     // Store in cache (even null so we don't keep querying)
     await this.cacheManager.set(cacheKey, cart);

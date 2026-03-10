@@ -19,8 +19,7 @@ export class EmailService {
   constructor(
     @InjectModel('AuthCollections') private authCollections: Model<Auth>,
     private readonly mailerService: MailerService,
-  ) /*           ChatGPT             */
-  {
+  ) /*           ChatGPT             */ {
     // Clean up expired OTPs periodically
     setInterval(() => this.cleanupExpiredOtps(), 600000); // Run every 10 minutes
   }
@@ -86,7 +85,7 @@ export class EmailService {
   async isValidOtp(loginDto: LoginDto) {
     const { email, code } = loginDto;
 
-    const found = await this.authCollections.findOne({ email }).exec();
+    const found = await this.authCollections.findOne({ email }).lean().exec();
     if (!found) {
       throw new UnauthorizedException('Cannot find OTP code for this email');
     }
