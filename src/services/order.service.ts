@@ -85,13 +85,8 @@ export class OrderService {
   }
 
   /** Get all orders for a specific user (with caching & lean) */
-  async getUserOrders(
-    userId: string,
-    page: number = 1,
-    limit: number = 10,
-    status?: OrderStatus,
-  ) {
-    const cacheKey = `${this.userOrdersCacheKey(userId)}_p${page}_l${limit}_s${status || 'all'}`;
+  async getUserOrders(userId: string, status?: OrderStatus) {
+    const cacheKey = `${this.userOrdersCacheKey(userId)}_s${status || 'all'}`;
 
     // Check cache first
     const cached = await this.cacheManager.get(cacheKey);
@@ -107,34 +102,15 @@ export class OrderService {
       filter.status = status;
     }
 
-    const skip = (page - 1) * limit;
-
-    const [orders, total] = await Promise.all([
-      this.orderModel
-        .find(filter)
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      this.orderModel.countDocuments(filter),
-    ]);
-
-    const result = {
-      orders,
-      pagination: {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-        hasNextPage: page * limit < total,
-        hasPreviousPage: page > 1,
-      },
-    };
+    const orders = await this.orderModel
+      .find(filter)
+      .sort({ createdAt: -1 })
+      .lean();
 
     // Store in cache
-    await this.cacheManager.set(cacheKey, result);
+    await this.cacheManager.set(cacheKey, orders);
 
-    return result;
+    return orders;
   }
 
   /** Get a single order by ID (with caching & lean) */

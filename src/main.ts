@@ -7,7 +7,8 @@ import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    snapshot: true
+    snapshot: true,
+    rawBody: true, // Required for Stripe webhook signature verification
   });
 
   // Configuring Swagger API

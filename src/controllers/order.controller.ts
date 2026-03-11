@@ -6,8 +6,6 @@ import {
     Query,
     Req,
     UseGuards,
-    ParseIntPipe,
-    DefaultValuePipe,
 } from '@nestjs/common';
 import { OrderService } from '../services/order.service';
 import { AuthGuard } from '../common/guards/jwt-auth.guard';
@@ -24,23 +22,19 @@ export class OrderController {
     /**
      * GET /orders
      * Get all orders for the authenticated user.
-     * Supports pagination and optional status filter.
+     * Supports optional status filter.
      *
      * Query params:
-     *   - page (default: 1)
-     *   - limit (default: 10)
      *   - status (optional: pending | paid | shipped | delivered | cancelled)
      */
     @Get()
     @Roles('customer', 'seller', 'admin')
     getUserOrders(
         @Req() req: CustomRequest,
-        @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-        @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
         @Query('status') status?: OrderStatus,
     ) {
         const userId = req.user.sub;
-        return this.orderService.getUserOrders(userId, page, limit, status);
+        return this.orderService.getUserOrders(userId, status);
     }
 
     /**
