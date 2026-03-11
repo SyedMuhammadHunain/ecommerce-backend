@@ -70,9 +70,12 @@ Click on the sections below to expand and view details about the modules.
 <br/>
 
 - **JWT & RBAC:** Secure JSON Web Token-based login with Role-Based Access Control (Admin, Customer, Seller).
-- **Verification Flows:** Automated email verification upon registration.
-- **Secure Recovery:** Safe Password Reset functionality via email tokens.
-- **Guards & Decorators:** Custom NestJS guards for protecting routes.
+- **Access & Refresh Tokens:** Dual token strategy with hashed refresh token storage.
+- **OTP Email Verification:** 6-digit OTP codes sent via email with auto-expiry and periodic cleanup.
+- **Secure Recovery:** Password Reset via cryptographically random email tokens.
+- **Guards & Decorators:** Custom `AuthGuard`, `RolesGuard`, `@Public()`, and `@Roles()` decorators.
+- **Rate Limiting:** Global throttler protection (10 requests per 60 seconds).
+- **Helmet & Compression:** HTTP security headers and response compression enabled.
 
 </details>
 
@@ -82,9 +85,9 @@ Click on the sections below to expand and view details about the modules.
 
 | Module | Functionality |
 | :--- | :--- |
-| **Products** | Full CRUD APIs. User association for seller product ownership. |
-| **Shopping Cart** | Persistent cart per user. Add, update quantities, and remove items seamlessly. |
-| **Orders** | Secure checkout process, order creation, status tracking, and history management. |
+| **Products** | Full CRUD APIs with seller ownership. Per-user caching with automatic invalidation. |
+| **Shopping Cart** | Persistent cart per user. Add items, update quantities. Cached reads with `.lean()` optimization. |
+| **Orders** | Full order lifecycle management with status tracking and validation. |
 
 </details>
 
@@ -237,24 +240,88 @@ Don't just read about it—interact with the API directly in your browser.
 
 ```text
 src/
-├── 📂 common/          # 🛡️ Guards, custom decorators, filters
-├── 📂 config/          # ⚙️ Configuration files (JWT, Stripe, Mailer setup)
-├── 📂 controllers/     # 🎮 API Route Handlers (REST Endpoints)
-├── 📂 dtos/            # 📄 Data Transfer Objects (Validation Schemas)
-├── 📂 enums/           # 🔢 TypeScript Enums (Roles, Statuses)
-├── 📂 interfaces/      # 📐 TypeScript Interfaces (Models, Requests)
-├── 📂 models/          # 🗄️ Mongoose Schemas & Documents
-├── 📂 modules/         # 🧩 Feature Modules (Core business domains)
-│   ├── 📦 auth/        # 🔐 Authentication & Authorization
-│   ├── 🛒 cart/        # 🧺 Cart management
-│   ├── 💳 checkout/    # 💼 Order checkout flow
-│   ├── 📦 order/       # 📑 Orders & transactions
-│   ├── 🛍️ product/     # 🏷️ Product catalog
-│   ├── 💰 stripe/      # 💸 Payment integration
-│   └── 👤 user/        # 🙍 User management
-├── 📂 services/        # 🧠 Business Logic layer
-└── 📜 main.ts          # 🚀 Application Entry Point
+├── 📂 common/              # 🛡️ Guards & Decorators
+│   ├── 📂 decorators/      #   @Public(), @Roles()
+│   └── 📂 guards/          #   AuthGuard, RolesGuard
+├── 📂 config/              # ⚙️ Configuration
+│   ├── jwt.config           #   JWT token setup
+│   ├── refresh-jwt.config   #   Refresh token setup
+│   ├── mailer.config        #   Nodemailer / Gmail
+│   └── mongoose.config      #   MongoDB connection pool
+├── 📂 controllers/         # 🎮 API Route Handlers
+│   ├── auth.controller      #   /auth/* (signup, login, OTP, password reset)
+│   ├── cart.controller      #   /cart/* (add-to-cart, get cart)
+│   ├── checkout.controller  #   /checkout (create checkout)
+│   ├── order.controller     #   /orders/* (list, detail, cancel, status)
+│   ├── product.controller   #   /product/* (CRUD)
+│   ├── stripe.controller    #   /payment/* (checkout session, webhook)
+│   └── user.controller      #   /user/* (become seller)
+├── 📂 dtos/                # 📄 Data Transfer Objects (Validation)
+├── 📂 enums/               # 🔢 TypeScript Enums
+│   ├── roles.enums          #   Customer, Seller, Admin
+│   └── order-status.enum    #   Pending, Paid, Shipped, Delivered, Cancelled
+├── 📂 interfaces/          # 📐 TypeScript Interfaces
+├── 📂 models/              # 🗄️ Mongoose Schemas
+│   ├── user.schema          #   User document
+│   ├── product.schema       #   Product document
+│   ├── cart.schema          #   Cart with items array
+│   ├── order.schema         #   Order with status tracking
+│   ├── checkout.schema      #   Checkout records
+│   └── auth.schema          #   OTP storage
+├── � modules/             # 🧩 NestJS Feature Modules
+│   ├── auth.module          #   Auth + JWT + Email
+│   ├── cart.module           #   Cart management
+│   ├── checkout.module       #   Checkout flow
+│   ├── order.module          #   Orders + status lifecycle
+│   ├── product.module        #   Product catalog
+│   ├── stripe.module         #   Stripe payment + webhook
+│   └── user.module           #   User management
+├── 📂 services/            # 🧠 Business Logic (caching & .lean())
+│   ├── auth.service         #   Login, tokens, password reset
+│   ├── cart.service          #   Cart CRUD with caching
+│   ├── checkout.service      #   Checkout creation
+│   ├── email.service         #   OTP & password reset emails
+│   ├── order.service         #   Orders with status transitions & caching
+│   ├── product.service       #   Product CRUD with caching
+│   ├── stripe.service        #   Stripe checkout + webhook handler
+│   └── user.service          #   Signup, role management
+├── 📜 app.module.ts        # 🏠 Root module
+├── 📜 app.controller.ts    # 🏠 Root controller
+├── 📜 app.service.ts       # 🏠 Root service
+└── 📜 main.ts              # 🚀 Entry Point (Swagger, Helmet, Compression, rawBody)
 ```
+</details>
+
+## 🔌 API Endpoints Reference
+
+<details>
+<summary><b>View all available endpoints</b></summary>
+<br/>
+
+| Method | Endpoint | Auth | Role | Description |
+| :--- | :--- | :---: | :--- | :--- |
+| `POST` | `/auth/signUp` | ❌ | Public | Register a new user |
+| `POST` | `/auth/login` | ❌ | Public | Login with email + OTP |
+| `POST` | `/auth/resend-otp` | ❌ | Public | Resend verification OTP |
+| `POST` | `/auth/forgot-password` | ❌ | Public | Request password reset link |
+| `POST` | `/auth/refresh-token` | ❌ | Public | Get new access token |
+| `PATCH` | `/auth/reset-password/:token` | ❌ | Public | Reset password with token |
+| `POST` | `/user/become-seller` | ✅ | Any | Upgrade role to Seller |
+| `POST` | `/product` | ✅ | Seller | Create a product |
+| `GET` | `/product` | ✅ | Seller, Customer | List products |
+| `GET` | `/product/:id` | ✅ | Seller, Customer | Get product details |
+| `PATCH` | `/product/:id` | ✅ | Seller | Update a product |
+| `DELETE` | `/product/:id` | ✅ | Seller | Delete a product |
+| `POST` | `/cart/add-to-cart` | ✅ | Any | Add item to cart |
+| `GET` | `/cart` | ✅ | Any | Get user's cart |
+| `POST` | `/checkout` | ✅ | Customer | Create checkout |
+| `GET` | `/orders` | ✅ | Customer, Seller, Admin | List user's orders |
+| `GET` | `/orders/:id` | ✅ | Customer, Seller, Admin | Get order details |
+| `PATCH` | `/orders/:id/cancel` | ✅ | Customer, Seller | Cancel an order |
+| `PATCH` | `/orders/:id/status` | ✅ | Admin | Update order status |
+| `POST` | `/payment/create-checkout-session` | ✅ | Customer | Create Stripe session |
+| `POST` | `/payment/webhook` | ❌ | Stripe | Receive payment events |
+
 </details>
 
 <br/>
