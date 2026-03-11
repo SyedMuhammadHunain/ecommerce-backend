@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { ConfigService } from '@nestjs/config';
 import { InternalServerErrorException } from '@nestjs/common';
 import { OrderService } from '../services/order.service';
+import { OrderStatus } from '../enums/order-status.enum';
 
 @Injectable()
 export class StripeService {
@@ -31,7 +32,7 @@ export class StripeService {
         amount,
         quantity,
         currency,
-        status: 'pending', // optional field,
+        status: OrderStatus.PENDING,
         userId,
       });
 
