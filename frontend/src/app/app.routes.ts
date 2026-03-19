@@ -20,26 +20,36 @@ export const routes: Routes = [
       // Customer Routes
       { 
         path: 'home', 
-        loadComponent: () => import('./features/customer/home/home.component').then(m => m.HomeComponent) 
+        loadComponent: () => import('./features/customer/home/home.component').then(m => m.HomeComponent)
+      },
+      { 
+        path: 'cart', 
+        canActivate: [roleGuard(['CUSTOMER'])], 
+        loadComponent: () => import('./features/customer/cart/cart').then(m => m.CartComponent)
+      },
+      { 
+        path: 'checkout', 
+        canActivate: [roleGuard(['CUSTOMER'])], 
+        loadComponent: () => import('./features/customer/checkout/checkout').then(m => m.CheckoutComponent)
       },
 
       // Seller Routes
       { 
         path: 'seller/dashboard', 
         canActivate: [roleGuard(['SELLER'])],
-        loadComponent: () => import('./features/seller/dashboard/dashboard.component').then(m => m.DashboardComponent) 
+        loadComponent: () => import('./features/seller/dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
       { 
         path: 'seller/products', 
         canActivate: [roleGuard(['SELLER'])],
-        loadComponent: () => import('./features/seller/products/products.component').then(m => m.ProductsComponent) 
+        loadComponent: () => import('./features/seller/products/products.component').then(m => m.ProductsComponent)
       },
 
       // Admin Routes
       { 
         path: 'admin', 
         canActivate: [roleGuard(['ADMIN'])],
-        loadComponent: () => import('./features/admin/admin.component').then(m => m.AdminComponent) 
+        loadComponent: () => import('./features/admin/admin.component').then(m => m.AdminComponent)
       }
     ]
   },

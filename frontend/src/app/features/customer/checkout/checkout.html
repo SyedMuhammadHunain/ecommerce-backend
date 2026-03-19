@@ -1,0 +1,93 @@
+<div class="max-w-5xl mx-auto p-6">
+  <p-toast></p-toast>
+  
+  <h1 class="text-3xl font-bold text-gray-800 mb-8">Checkout</h1>
+  
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    
+    <!-- Left Column: Settings / Forms -->
+    <div>
+      <p-card header="Shipping Address" styleClass="shadow-sm">
+        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+          <div class="flex flex-col gap-2">
+              <label for="street">Street Address</label>
+              <input pInputText id="street" formControlName="street" placeholder="123 Main St" class="p-inputtext-lg" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-2">
+                <label for="city">City</label>
+                <input pInputText id="city" formControlName="city" placeholder="New York" />
+            </div>
+            
+            <div class="flex flex-col gap-2">
+                <label for="state">State / Province</label>
+                <input pInputText id="state" formControlName="state" placeholder="NY" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-2">
+                <label for="zip">ZIP / Postal Code</label>
+                <input pInputText id="zip" formControlName="zip" placeholder="10001" />
+            </div>
+            
+            <div class="flex flex-col gap-2">
+                <label for="country">Country</label>
+                <input pInputText id="country" formControlName="country" placeholder="United States" />
+            </div>
+          </div>
+        </form>
+      </p-card>
+    </div>
+
+    <!-- Right Column: Order Summary -->
+    <div>
+      <p-card header="Order Summary" styleClass="shadow-sm bg-gray-50">
+        <div class="max-h-80 overflow-y-auto mb-4 pr-2">
+          <div *ngFor="let item of cartService.cart()?.items" class="flex justify-between items-center mb-3">
+             <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gray-200 rounded flex justify-center items-center">
+                  <i class="pi pi-image text-gray-400"></i>
+                </div>
+                <div>
+                   <h3 class="font-medium text-gray-800 text-sm">{{ item.productId?.productName }}</h3>
+                   <span class="text-xs text-gray-500">Qty: {{ item.quantity }}</span>
+                </div>
+             </div>
+             <span class="font-medium">${{ item.productId?.price * item.quantity | number:'1.2-2' }}</span>
+          </div>
+        </div>
+
+        <p-divider></p-divider>
+
+        <div class="space-y-3 mt-4">
+          <div class="flex justify-between text-gray-600">
+            <span>Subtotal</span>
+            <span>${{ getTotalPrice() | number:'1.2-2' }}</span>
+          </div>
+          <div class="flex justify-between text-gray-600">
+            <span>Shipping</span>
+            <span class="text-green-600">Free</span>
+          </div>
+          
+          <p-divider></p-divider>
+          
+          <div class="flex justify-between text-xl font-bold text-gray-800 mb-6">
+            <span>Total</span>
+            <span>${{ getTotalPrice() | number:'1.2-2' }}</span>
+          </div>
+          
+          <p-button 
+            label="Confirm Order" 
+            icon="pi pi-check" 
+            [loading]="checkoutService.isLoading()"
+            (onClick)="onSubmit()"
+            styleClass="w-full bg-blue-600 hover:bg-blue-700 border-none p-button-lg">
+          </p-button>
+        </div>
+      </p-card>
+    </div>
+
+  </div>
+</div>

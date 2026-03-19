@@ -1,7 +1,8 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
 
 // PrimeNG
 import { MenubarModule } from 'primeng/menubar';
@@ -18,17 +19,17 @@ import { BadgeModule } from 'primeng/badge';
         <p-menubar [model]="items()">
             <ng-template pTemplate="start">
                 <span class="text-xl font-bold text-blue-600 mr-8 cursor-pointer" (click)="navigateHome()">
-                  <i class="pi pi-cart-plus text-xl mr-2"></i>E-Commerce
+                    <i class="pi pi-cart-plus text-xl mr-2"></i>E-Commerce
                 </span>
             </ng-template>
             <ng-template pTemplate="end">
                 <div class="flex items-center gap-4">
                     <span *ngIf="user()" class="text-gray-700 hidden sm:inline-block">
-                        Welcome, <strong>{{ user()?.email }}</strong>
+                        Welcome, <strong>{{ user()?.name || user()?.email }}</strong>
                     </span>
-                    <span *ngIf="user()?.role === 'CUSTOMER'" class="cursor-pointer hover:text-blue-600 transition-colors p-overlay-badge" style="font-size: 1.25rem">
+                    <span *ngIf="user()?.role === 'CUSTOMER'" class="cursor-pointer hover:text-blue-600 transition-colors p-overlay-badge mr-4" style="font-size: 1.25rem" (click)="goToCart()">
                        <i class="pi pi-shopping-cart text-2xl"></i>
-                       <p-badge value="0" severity="danger" styleClass="absolute top-0 right-0" [style]="{transform: 'translate(50%, -50%)'}"></p-badge>
+                       <p-badge [value]="cartService.cartItemCount().toString()" severity="danger" styleClass="absolute top-0 right-0" [style]="{transform: 'translate(50%, -50%)'}"></p-badge>
                     </span>
                     <p-button 
                         label="Logout" 
@@ -42,11 +43,18 @@ import { BadgeModule } from 'primeng/badge';
     </div>
   `
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   public authService = inject(AuthService);
+  public cartService = inject(CartService);
   private router = inject(Router);
 
   public user = this.authService.currentUser;
+
+  ngOnInit() {
+    if (this.user()?.role === 'CUSTOMER') {
+      this.cartService.getCart().subscribe();
+    }
+  }
 
   public items = computed<MenuItem[]>(() => {
     const role = this.user()?.role;
@@ -84,6 +92,10 @@ export class NavbarComponent {
       if (role === 'SELLER') this.router.navigate(['/seller/dashboard']);
       else if (role === 'ADMIN') this.router.navigate(['/admin']);
       else this.router.navigate(['/home']);
+  }
+
+  goToCart() {
+    this.router.navigate(['/cart']);
   }
 
   logout() {

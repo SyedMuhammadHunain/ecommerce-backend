@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../core/services/product.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { CartService } from '../../../core/services/cart.service';
 
 // PrimeNG
 import { CardModule } from 'primeng/card';
@@ -41,7 +42,9 @@ import { MessageService } from 'primeng/api';
               
               <ng-template pTemplate="footer">
                   <div class="flex gap-3 mt-auto pt-4">
-                      <p-button label="Add to Cart" icon="pi pi-shopping-cart" styleClass="w-full bg-blue-600 hover:bg-blue-700 border-none"></p-button>
+                      <p-button label="Add to Cart" icon="pi pi-shopping-cart"
+                      (onClick)="addToCart(product._id!)" [loading]="cartService.loading()"
+                      styleClass="w-full bg-blue-600 hover:bg-blue-700 border-none"></p-button>
                   </div>
               </ng-template>
           </p-card>
@@ -52,16 +55,31 @@ import { MessageService } from 'primeng/api';
 export class HomeComponent implements OnInit {
   public productService = inject(ProductService);
   public authService = inject(AuthService);
+  public cartService = inject(CartService);
   private messageService = inject(MessageService);
 
   ngOnInit() {
     this.fetchProducts();
+    this.cartService.getCart().subscribe();
   }
 
   fetchProducts() {
     this.productService.getAllProducts().subscribe({
       error: (err) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load products' });
+      }
+    });
+  }
+
+  addToCart(productId: string) {
+    this.cartService.addToCart(productId, 1).subscribe({
+      next: (cart) => {
+        if (cart) {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Added to cart' });
+        }
+      },
+      error: () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add to cart' });
       }
     });
   }
