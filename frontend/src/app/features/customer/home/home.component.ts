@@ -1,26 +1,47 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ProductService } from '../../../core/services/product.service';
+import { AuthService } from '../../../core/services/auth.service';
+
+// PrimeNG
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, CardModule, ButtonModule],
+  imports: [CommonModule, CardModule, ButtonModule, ProgressSpinnerModule, ToastModule],
+  providers: [MessageService],
   template: `
     <div class="p-6">
+      <p-toast></p-toast>
       <h1 class="text-3xl font-bold mb-6 text-gray-800">Featured Products</h1>
-      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <p-card *ngFor="let i of [1,2,3,4,5,6]" header="Product Title" subheader="$99.99" [style]="{ width: '100%' }">
+      
+      <div *ngIf="productService.isLoading()" class="flex justify-center items-center py-20">
+          <p-progressSpinner></p-progressSpinner>
+      </div>
+
+      <div *ngIf="!productService.isLoading() && productService.products().length === 0" class="text-center py-10 text-gray-500">
+          <i class="pi pi-box text-5xl mb-4"></i>
+          <p class="text-xl">No products available at the moment.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6" *ngIf="!productService.isLoading()">
+          <p-card *ngFor="let product of productService.products()" [header]="product.productName" [subheader]="'$' + product.price" [style]="{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }" styleClass="shadow-sm hover:shadow-md transition-shadow h-full">
               <ng-template pTemplate="header">
-                  <div class="h-48 bg-gray-200 flex items-center justify-center rounded-t-md">
+                  <div class="h-48 bg-gray-200 flex items-center justify-center rounded-t-lg overflow-hidden">
                       <i class="pi pi-image text-4xl text-gray-400"></i>
                   </div>
               </ng-template>
-              <p>A brief description of this amazing product that you definitely want to buy.</p>
+              
+              <p class="text-gray-600 line-clamp-2 m-0 flex-grow">{{ product.description }}</p>
+              
               <ng-template pTemplate="footer">
-                  <div class="flex gap-3 mt-1">
-                      <p-button label="Add to Cart" icon="pi pi-shopping-cart" styleClass="w-full"></p-button>
+                  <div class="flex gap-3 mt-auto pt-4">
+                      <p-button label="Add to Cart" icon="pi pi-shopping-cart" styleClass="w-full bg-blue-600 hover:bg-blue-700 border-none"></p-button>
                   </div>
               </ng-template>
           </p-card>
@@ -28,4 +49,20 @@ import { ButtonModule } from 'primeng/button';
     </div>
   `
 })
-export class HomeComponent {}
+export class HomeComponent implements OnInit {
+  public productService = inject(ProductService);
+  public authService = inject(AuthService);
+  private messageService = inject(MessageService);
+
+  ngOnInit() {
+    this.fetchProducts();
+  }
+
+  fetchProducts() {
+    this.productService.getAllProducts().subscribe({
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load products' });
+      }
+    });
+  }
+}

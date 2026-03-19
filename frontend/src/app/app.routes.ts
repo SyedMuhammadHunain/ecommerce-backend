@@ -29,6 +29,11 @@ export const routes: Routes = [
         canActivate: [roleGuard(['SELLER'])],
         loadComponent: () => import('./features/seller/dashboard/dashboard.component').then(m => m.DashboardComponent) 
       },
+      { 
+        path: 'seller/products', 
+        canActivate: [roleGuard(['SELLER'])],
+        loadComponent: () => import('./features/seller/products/products.component').then(m => m.ProductsComponent) 
+      },
 
       // Admin Routes
       { 
