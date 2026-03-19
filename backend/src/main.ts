@@ -11,6 +11,13 @@ async function bootstrap() {
     rawBody: true, // Required for Stripe webhook signature verification
   });
 
+  //enable CORS for frontend
+  app.enableCors({
+    origin: 'http://localhost:4200', // Adjust this to your frontend URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   // Configuring Swagger API
   const config = new DocumentBuilder()
     .setTitle('E-Commerce API')

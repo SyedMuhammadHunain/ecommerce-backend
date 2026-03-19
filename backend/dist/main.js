@@ -11,6 +11,11 @@ async function bootstrap() {
         snapshot: true,
         rawBody: true,
     });
+    app.enableCors({
+        origin: 'http://localhost:4200',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true,
+    });
     const config = new swagger_1.DocumentBuilder()
         .setTitle('E-Commerce API')
         .setVersion('1.0')

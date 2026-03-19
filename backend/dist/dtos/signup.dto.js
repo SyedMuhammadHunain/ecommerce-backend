@@ -20,8 +20,8 @@ exports.SignUpDto = SignUpDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.Matches)(/^[A-Za-z ]+$/, {
-        message: 'Name can only contain letters and spaces.',
+    (0, class_validator_1.Matches)(/^[A-Za-z0-9 _.-]+$/, {
+        message: 'Name can only contain letters, numbers, spaces, dots, dashes, and underscores.',
     }),
     __metadata("design:type", String)
 ], SignUpDto.prototype, "name", void 0);

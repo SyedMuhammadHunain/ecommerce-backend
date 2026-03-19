@@ -87,11 +87,11 @@ let EmailService = EmailService_1 = class EmailService {
         return true;
     }
     async passwordResetEmail(email, passwordResetToken) {
-        const passwordResetLink = `http://localhost:3000/reset-password/${passwordResetToken}`;
+        const passwordResetLink = `http://localhost:4200/reset-password/${passwordResetToken}`;
         await this.mailerService.sendMail({
             to: email,
             from: 'noreply@example.com',
-            subject: 'Your Verification Code',
+            subject: 'Password Reset Link',
             text: `Click the link to reset your password: ${passwordResetLink}`,
         });
         return passwordResetLink;

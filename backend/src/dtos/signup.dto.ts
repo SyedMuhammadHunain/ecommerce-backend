@@ -9,8 +9,8 @@ import {
 export class SignUpDto {
   @IsNotEmpty()
   @IsString()
-  @Matches(/^[A-Za-z ]+$/, {
-    message: 'Name can only contain letters and spaces.',
+  @Matches(/^[A-Za-z0-9 _.-]+$/, {
+    message: 'Name can only contain letters, numbers, spaces, dots, dashes, and underscores.',
   })
   name: string;
 

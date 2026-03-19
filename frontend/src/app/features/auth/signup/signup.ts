@@ -34,16 +34,16 @@ import { MessageService } from 'primeng/api';
         <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
           
           <div class="flex flex-col">
-            <label for="username" class="block mb-2 font-medium text-gray-700">Username</label>
+            <label for="name" class="block mb-2 font-medium text-gray-700">Name</label>
             <input 
-              id="username" 
+              id="name" 
               type="text" 
               pInputText 
-              formControlName="username" 
+              formControlName="name" 
               class="w-full" 
               autofocus />
-            <div *ngIf="signupForm.get('username')?.invalid && signupForm.get('username')?.dirty" class="mt-1">
-              <p-message severity="error" text="Username is required"></p-message>
+            <div *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.dirty" class="mt-1">
+              <p-message severity="error" text="Name is required"></p-message>
             </div>
           </div>
 
@@ -85,7 +85,7 @@ import { MessageService } from 'primeng/api';
           
           <div class="text-center text-gray-500 mt-4">
             <span>Already have an account? </span>
-            <a routerLink="/auth/login" class="text-blue-600 hover:text-blue-700 no-underline font-medium transition-colors">Log In</a>
+            <a routerLink="/login" class="text-blue-600 hover:text-blue-700 no-underline font-medium transition-colors">Log In</a>
           </div>
         </form>
       </p-card>
@@ -100,7 +100,7 @@ export class Signup {
   private router = inject(Router);
 
   public signupForm: FormGroup = this.fb.group({
-    username: ['', Validators.required],
+    name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
@@ -110,7 +110,7 @@ export class Signup {
       this.authService.signUp(this.signupForm.value).subscribe({
         next: () => {
           this.messageService.add({severity:'success', summary:'Success', detail:'Successfully signed up! Please log in.'});
-          setTimeout(() => this.router.navigate(['/auth/login']), 1500);
+          setTimeout(() => this.router.navigate(['/login']), 1500);
         },
         error: (err) => {
            this.messageService.add({severity:'error', summary:'Error', detail: err.error?.message || 'Sign up failed'});

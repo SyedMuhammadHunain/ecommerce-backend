@@ -62,8 +62,27 @@ import { MessageService } from 'primeng/api';
             </div>
           </div>
 
-          <div class="flex justify-between items-center mt-2 mb-4">
-             <a routerLink="/auth/forgot-password" class="text-blue-600 hover:text-blue-700 no-underline font-medium transition-colors">Forgot Password?</a>
+          <div class="flex flex-col">
+            <div class="flex justify-between items-center mb-2">
+              <label for="code" class="block font-medium text-gray-700">OTP Code</label>
+              <button type="button" (click)="resendOtp()" [disabled]="loginForm.get('email')?.invalid || isResending" class="text-sm text-blue-600 hover:text-blue-700 disabled:text-gray-400 bg-transparent border-none cursor-pointer p-0 font-medium transition-colors">
+                {{ isResending ? 'Sending...' : 'Resend OTP' }}
+              </button>
+            </div>
+            <input 
+              id="code" 
+              type="text" 
+              pInputText 
+              formControlName="code" 
+              class="w-full" 
+              placeholder="Check your email for the code" />
+            <div *ngIf="loginForm.get('code')?.invalid && loginForm.get('code')?.dirty" class="mt-1">
+              <p-message severity="error" text="Code should not be empty"></p-message>
+            </div>
+          </div>
+
+          <div class="flex justify-end items-center mt-2 mb-4">
+             <a routerLink="/forgot-password" class="text-blue-600 hover:text-blue-700 no-underline font-medium transition-colors">Forgot Password?</a>
           </div>
 
           <p-button 
@@ -76,7 +95,7 @@ import { MessageService } from 'primeng/api';
           
           <div class="text-center text-gray-500">
             <span>Don't have an account? </span>
-            <a routerLink="/auth/signup" class="text-blue-600 hover:text-blue-700 no-underline font-medium transition-colors">Sign up</a>
+            <a routerLink="/signup" class="text-blue-600 hover:text-blue-700 no-underline font-medium transition-colors">Sign up</a>
           </div>
         </form>
       </p-card>
@@ -89,10 +108,33 @@ export class LoginComponent {
   public authService = inject(AuthService);
   private messageService = inject(MessageService);
 
+  public isResending = false;
+
   public loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    code: ['', [Validators.required]]
   });
+
+  resendOtp() {
+    const emailControl = this.loginForm.get('email');
+    if (emailControl?.valid) {
+      this.isResending = true;
+      this.authService.resendOtp({ email: emailControl.value }).subscribe({
+        next: () => {
+          this.isResending = false;
+          this.messageService.add({severity:'success', summary:'Success', detail:'OTP successfully resent to your email!'});
+        },
+        error: (err) => {
+          this.isResending = false;
+          this.messageService.add({severity:'error', summary:'Error', detail: err.error?.message || 'Failed to resend OTP.'});
+        }
+      });
+    } else {
+      this.messageService.add({severity:'warn', summary:'Warning', detail:'Please enter a valid email address first.'});
+      emailControl?.markAsDirty();
+    }
+  }
 
   onSubmit() {
     if (this.loginForm.valid) {
