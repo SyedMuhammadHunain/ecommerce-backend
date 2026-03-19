@@ -12,6 +12,8 @@ import { PasswordModule } from 'primeng/password';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @Component({
   selector: 'app-signup',
@@ -25,7 +27,9 @@ import { MessageService } from 'primeng/api';
     InputTextModule,
     PasswordModule,
     MessageModule,
-    ToastModule
+    ToastModule,
+    InputGroupModule,
+    InputGroupAddonModule
   ],
   template: `
     <div class="flex items-center justify-center min-h-screen bg-gray-50 py-8">
@@ -34,14 +38,19 @@ import { MessageService } from 'primeng/api';
         <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
           
           <div class="flex flex-col">
-            <label for="name" class="block mb-2 font-medium text-gray-700">Name</label>
-            <input 
-              id="name" 
-              type="text" 
-              pInputText 
-              formControlName="name" 
-              class="w-full" 
-              autofocus />
+            <label for="name" class="block mb-2 font-medium text-gray-700">Full Name</label>
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i class="pi pi-user"></i>
+                </p-inputgroup-addon>
+                <input 
+                  id="name" 
+                  type="text" 
+                  pInputText 
+                  formControlName="name" 
+                  class="w-full" 
+                  autofocus />
+            </p-inputgroup>
             <div *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.dirty" class="mt-1">
               <p-message severity="error" text="Name is required"></p-message>
             </div>
@@ -49,12 +58,17 @@ import { MessageService } from 'primeng/api';
 
           <div class="flex flex-col">
             <label for="email" class="block mb-2 font-medium text-gray-700">Email</label>
-            <input 
-              id="email" 
-              type="email" 
-              pInputText 
-              formControlName="email" 
-              class="w-full" />
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i class="pi pi-envelope"></i>
+                </p-inputgroup-addon>
+                <input 
+                  id="email" 
+                  type="email" 
+                  pInputText 
+                  formControlName="email" 
+                  class="w-full" />
+            </p-inputgroup>
             <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.dirty" class="mt-1">
               <p-message severity="error" text="Valid email is required"></p-message>
             </div>
@@ -62,14 +76,19 @@ import { MessageService } from 'primeng/api';
 
           <div class="flex flex-col">
             <label for="password" class="block mb-2 font-medium text-gray-700">Password</label>
-            <p-password 
-              id="password" 
-              formControlName="password" 
-              [toggleMask]="true" 
-              [feedback]="true"
-              styleClass="w-full"
-              inputStyleClass="w-full">
-            </p-password>
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i class="pi pi-lock"></i>
+                </p-inputgroup-addon>
+                <p-password 
+                  id="password" 
+                  formControlName="password" 
+                  [toggleMask]="true" 
+                  [feedback]="true"
+                  styleClass="w-full"
+                  inputStyleClass="w-full">
+                </p-password>
+            </p-inputgroup>
             <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.dirty" class="mt-1">
               <p-message severity="error" text="Password must be at least 6 characters"></p-message>
             </div>
@@ -77,8 +96,8 @@ import { MessageService } from 'primeng/api';
 
           <p-button 
             type="submit" 
-            label="Sign Up" 
-            icon="pi pi-user-plus" 
+            [label]="authService.isAuthLoading() ? 'Signing up...' : 'Sign Up'" 
+            [icon]="authService.isAuthLoading() ? 'pi pi-spin pi-spinner' : 'pi pi-user-plus'"  
             styleClass="w-full bg-blue-600 hover:bg-blue-700 border-none shadow-none text-white py-2 transition-colors mb-2 mt-4"
             [disabled]="signupForm.invalid || authService.isAuthLoading()">
           </p-button>
@@ -100,7 +119,7 @@ export class Signup {
   private router = inject(Router);
 
   public signupForm: FormGroup = this.fb.group({
-    name: ['', Validators.required],
+    name: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
@@ -109,11 +128,11 @@ export class Signup {
     if (this.signupForm.valid) {
       this.authService.signUp(this.signupForm.value).subscribe({
         next: () => {
-          this.messageService.add({severity:'success', summary:'Success', detail:'Successfully signed up! Please log in.'});
-          setTimeout(() => this.router.navigate(['/login']), 1500);
+          this.messageService.add({severity:'success', summary:'Success', detail:'Account successfully created!'});
+          setTimeout(() => this.router.navigate(['/login']), 2000);
         },
-        error: (err) => {
-           this.messageService.add({severity:'error', summary:'Error', detail: err.error?.message || 'Sign up failed'});
+        error: (err: any) => {
+           this.messageService.add({severity:'error', summary:'Error', detail: err.error?.message || 'Signup failed'});
         }
       });
     }

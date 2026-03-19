@@ -12,6 +12,8 @@ import { PasswordModule } from 'primeng/password';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +27,9 @@ import { MessageService } from 'primeng/api';
     InputTextModule,
     PasswordModule,
     MessageModule,
-    ToastModule
+    ToastModule,
+    InputGroupModule,
+    InputGroupAddonModule
   ],
   template: `
     <div class="flex items-center justify-center min-h-screen bg-gray-50">
@@ -35,13 +39,18 @@ import { MessageService } from 'primeng/api';
           
           <div class="flex flex-col">
             <label for="email" class="block mb-2 font-medium text-gray-700">Email</label>
-            <input 
-              id="email" 
-              type="email" 
-              pInputText 
-              formControlName="email" 
-              class="w-full" 
-              autofocus />
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i class="pi pi-envelope"></i>
+                </p-inputgroup-addon>
+                <input 
+                  id="email" 
+                  type="email" 
+                  pInputText 
+                  formControlName="email" 
+                  class="w-full" 
+                  autofocus />
+            </p-inputgroup>
             <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.dirty" class="mt-1">
               <p-message severity="error" text="Valid email is required"></p-message>
             </div>
@@ -49,14 +58,19 @@ import { MessageService } from 'primeng/api';
 
           <div class="flex flex-col">
             <label for="password" class="block mb-2 font-medium text-gray-700">Password</label>
-            <p-password 
-              id="password" 
-              formControlName="password" 
-              [toggleMask]="true" 
-              [feedback]="false"
-              styleClass="w-full"
-              inputStyleClass="w-full">
-            </p-password>
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i class="pi pi-lock"></i>
+                </p-inputgroup-addon>
+                <p-password 
+                  id="password" 
+                  formControlName="password" 
+                  [toggleMask]="true" 
+                  [feedback]="false"
+                  styleClass="w-full"
+                  inputStyleClass="w-full">
+                </p-password>
+            </p-inputgroup>
             <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.dirty" class="mt-1">
               <p-message severity="error" text="Password is required"></p-message>
             </div>
@@ -65,17 +79,23 @@ import { MessageService } from 'primeng/api';
           <div class="flex flex-col">
             <div class="flex justify-between items-center mb-2">
               <label for="code" class="block font-medium text-gray-700">OTP Code</label>
-              <button type="button" (click)="resendOtp()" [disabled]="loginForm.get('email')?.invalid || isResending" class="text-sm text-blue-600 hover:text-blue-700 disabled:text-gray-400 bg-transparent border-none cursor-pointer p-0 font-medium transition-colors">
+              <button type="button" (click)="resendOtp()" [disabled]="loginForm.get('email')?.invalid || isResending" class="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 disabled:text-gray-400 bg-transparent border-none cursor-pointer p-0 font-medium transition-colors">
+                <i class="pi" [ngClass]="isResending ? 'pi-spin pi-spinner' : 'pi-sync'" style="font-size: 0.875rem"></i>
                 {{ isResending ? 'Sending...' : 'Resend OTP' }}
               </button>
             </div>
-            <input 
-              id="code" 
-              type="text" 
-              pInputText 
-              formControlName="code" 
-              class="w-full" 
-              placeholder="Check your email for the code" />
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i class="pi pi-key"></i>
+                </p-inputgroup-addon>
+                <input 
+                  id="code" 
+                  type="text" 
+                  pInputText 
+                  formControlName="code" 
+                  class="w-full" 
+                  placeholder="Check your email for the code" />
+            </p-inputgroup>
             <div *ngIf="loginForm.get('code')?.invalid && loginForm.get('code')?.dirty" class="mt-1">
               <p-message severity="error" text="Code should not be empty"></p-message>
             </div>
@@ -87,8 +107,8 @@ import { MessageService } from 'primeng/api';
 
           <p-button 
             type="submit" 
-            label="Log In" 
-            icon="pi pi-sign-in" 
+            [label]="authService.isAuthLoading() ? 'Logging in...' : 'Log In'" 
+            [icon]="authService.isAuthLoading() ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'" 
             styleClass="w-full bg-blue-600 hover:bg-blue-700 border-none shadow-none text-white py-2 transition-colors mb-4"
             [disabled]="loginForm.invalid || authService.isAuthLoading()">
           </p-button>

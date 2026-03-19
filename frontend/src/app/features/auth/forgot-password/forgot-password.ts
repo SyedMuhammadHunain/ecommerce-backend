@@ -11,6 +11,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @Component({
   selector: 'app-forgot-password',
@@ -23,23 +25,30 @@ import { MessageService } from 'primeng/api';
     ButtonModule,
     InputTextModule,
     MessageModule,
-    ToastModule
+    ToastModule,
+    InputGroupModule,
+    InputGroupAddonModule
   ],
   template: `
     <div class="flex items-center justify-center min-h-screen bg-gray-50 py-8">
       <p-toast></p-toast>
-      <p-card header="Forgot Password" subheader="Enter your email to reset password" [style]="{width: '400px', padding: '1rem'}">
+      <p-card header="Forgot Password" subheader="Enter your email to reset your password" [style]="{width: '400px', padding: '1rem'}">
         <form [formGroup]="forgotForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
           
           <div class="flex flex-col">
-            <label for="email" class="block mb-2 font-medium text-gray-700">Email</label>
-            <input 
-              id="email" 
-              type="email" 
-              pInputText 
-              formControlName="email" 
-              class="w-full" 
-              autofocus />
+            <label for="email" class="block mb-2 font-medium text-gray-700">Email Address</label>
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i class="pi pi-envelope"></i>
+                </p-inputgroup-addon>
+                <input 
+                  id="email" 
+                  type="email" 
+                  pInputText 
+                  formControlName="email" 
+                  class="w-full" 
+                  autofocus />
+            </p-inputgroup>
             <div *ngIf="forgotForm.get('email')?.invalid && forgotForm.get('email')?.dirty" class="mt-1">
               <p-message severity="error" text="Valid email is required"></p-message>
             </div>
@@ -47,14 +56,16 @@ import { MessageService } from 'primeng/api';
 
           <p-button 
             type="submit" 
-            label="Send Reset Link" 
-            icon="pi pi-envelope" 
+            [label]="authService.isAuthLoading() ? 'Sending...' : 'Send Reset Link'" 
+            [icon]="authService.isAuthLoading() ? 'pi pi-spin pi-spinner' : 'pi pi-send'" 
             styleClass="w-full bg-blue-600 hover:bg-blue-700 border-none shadow-none text-white py-2 transition-colors mb-2 mt-4"
             [disabled]="forgotForm.invalid || authService.isAuthLoading()">
           </p-button>
           
           <div class="text-center text-gray-500 mt-4">
-            <a routerLink="/login" class="text-blue-600 hover:text-blue-700 no-underline font-medium transition-colors">Back to Log In</a>
+            <a routerLink="/login" class="flex items-center justify-center gap-2 text-blue-600 hover:text-blue-700 no-underline font-medium transition-colors">
+              <i class="pi pi-arrow-left text-sm"></i> Back to Log In
+            </a>
           </div>
         </form>
       </p-card>
@@ -76,12 +87,11 @@ export class ForgotPassword {
     if (this.forgotForm.valid) {
       this.authService.forgotPassword(this.forgotForm.value).subscribe({
         next: () => {
-          this.messageService.add({severity:'success', summary:'Success', detail:'If an account exists, a reset link has been sent.'});
+          this.messageService.add({severity:'success', summary:'Success', detail:'If your email exists, a reset link has been sent!'});
           setTimeout(() => this.router.navigate(['/login']), 2500);
         },
         error: (err) => {
-           // We might also want to show success even on error to prevent email enumeration, but depending on the backend response:
-           this.messageService.add({severity:'error', summary:'Error', detail: err.error?.message || 'Failed to process request'});
+           this.messageService.add({severity:'error', summary:'Error', detail: err.error?.message || 'Failed to send reset link.'});
         }
       });
     }
