@@ -13,4 +13,14 @@ export declare class CartService {
     }> & {
         __v: number;
     }) | null>;
+    removeFromCart(userId: string, productId: string): Promise<(import("mongoose").FlattenMaps<Cart> & Required<{
+        _id: Types.ObjectId;
+    }> & {
+        __v: number;
+    }) | null>;
+    clearCart(userId: string): Promise<(import("mongoose").FlattenMaps<Cart> & Required<{
+        _id: Types.ObjectId;
+    }> & {
+        __v: number;
+    }) | null>;
 }

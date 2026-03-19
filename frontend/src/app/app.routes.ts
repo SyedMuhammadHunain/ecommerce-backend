@@ -32,6 +32,11 @@ export const routes: Routes = [
         canActivate: [roleGuard(['CUSTOMER'])], 
         loadComponent: () => import('./features/customer/checkout/checkout').then(m => m.CheckoutComponent)
       },
+      {
+        path: 'orders',
+        canActivate: [roleGuard(['CUSTOMER'])], 
+        loadComponent: () => import('./features/customer/orders/orders').then(m => m.OrdersComponent)
+      },
 
       // Seller Routes
       { 
@@ -43,6 +48,11 @@ export const routes: Routes = [
         path: 'seller/products', 
         canActivate: [roleGuard(['SELLER'])],
         loadComponent: () => import('./features/seller/products/products.component').then(m => m.ProductsComponent)
+      },
+      {
+        path: 'seller/orders',
+        canActivate: [roleGuard(['SELLER'])],
+        loadComponent: () => import('./features/seller/orders/orders').then(m => m.SellerOrdersComponent)
       },
 
       // Admin Routes

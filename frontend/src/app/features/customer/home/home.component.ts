@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../core/services/product.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { CartService } from '../../../core/services/cart.service';
+import { FrontendStripeService } from '../../../core/services/stripe.service';
 
 // PrimeNG
 import { CardModule } from 'primeng/card';
@@ -41,10 +42,16 @@ import { MessageService } from 'primeng/api';
               <p class="text-gray-600 line-clamp-2 m-0 flex-grow">{{ product.description }}</p>
               
               <ng-template pTemplate="footer">
-                  <div class="flex gap-3 mt-auto pt-4">
+                  <div class="flex flex-col gap-2 mt-auto pt-4">
+                      <!-- Existing Add to Cart -->
                       <p-button label="Add to Cart" icon="pi pi-shopping-cart"
                       (onClick)="addToCart(product._id!)" [loading]="cartService.loading()"
                       styleClass="w-full bg-blue-600 hover:bg-blue-700 border-none"></p-button>
+                      
+                      <!-- New Buy Now -> Stripe -->
+                      <p-button label="Buy Now" icon="pi pi-credit-card"
+                      (onClick)="buyNow(product)" [loading]="stripeService.isLoading()"
+                      styleClass="w-full p-button-success border-none"></p-button>
                   </div>
               </ng-template>
           </p-card>
@@ -56,11 +63,14 @@ export class HomeComponent implements OnInit {
   public productService = inject(ProductService);
   public authService = inject(AuthService);
   public cartService = inject(CartService);
+  public stripeService = inject(FrontendStripeService);
   private messageService = inject(MessageService);
 
   ngOnInit() {
     this.fetchProducts();
-    this.cartService.getCart().subscribe();
+    if (this.authService.currentUser()?.role === 'CUSTOMER') {
+        this.cartService.getCart().subscribe();
+    }
   }
 
   fetchProducts() {
@@ -72,6 +82,11 @@ export class HomeComponent implements OnInit {
   }
 
   addToCart(productId: string) {
+    if (!this.authService.currentUser()) {
+        this.messageService.add({ severity: 'warn', summary: 'Login Required', detail: 'Please login to add to cart' });
+        return;
+    }
+    
     this.cartService.addToCart(productId, 1).subscribe({
       next: (cart) => {
         if (cart) {
@@ -81,6 +96,24 @@ export class HomeComponent implements OnInit {
       error: () => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add to cart' });
       }
+    });
+  }
+
+  buyNow(product: any) {
+    if (!this.authService.currentUser()) {
+        this.messageService.add({ severity: 'warn', summary: 'Login Required', detail: 'Please login to purchase' });
+        return;
+    }
+    
+    this.stripeService.createCheckoutSession({
+      amount: product.price,
+      currency: 'usd',
+      productId: product._id,
+      quantity: 1
+    }).subscribe({
+        error: () => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to initiate payment' });
+        }
     });
   }
 }

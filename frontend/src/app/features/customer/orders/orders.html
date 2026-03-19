@@ -1,0 +1,52 @@
+<div class="p-6 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-3xl font-bold text-gray-800">My Orders</h1>
+  </div>
+
+  <div *ngIf="orderService.isLoading()" class="flex justify-center py-20">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+
+  <div *ngIf="!orderService.isLoading()">
+    
+    <div *ngIf="orderService.orders().length === 0" class="text-center py-20 bg-white rounded-lg shadow-sm border border-gray-100">
+      <i class="pi pi-box text-6xl text-gray-300 mb-6"></i>
+      <h2 class="text-2xl font-semibold mb-2 text-gray-600">No orders yet</h2>
+      <p class="text-gray-500">When you place an order, it will appear here.</p>
+    </div>
+
+    <div *ngIf="orderService.orders().length > 0" class="card">
+        <p-table [value]="orderService.orders()" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-striped shadow-sm">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-order>
+                <tr>
+                    <td class="font-mono text-sm text-gray-600">{{ order._id | slice:0:8 }}...</td>
+                    <td>{{ order.createdAt | date:'mediumDate' }}</td>
+                    <td class="font-medium">${{ order.amount | number:'1.2-2' }}</td>
+                    <td>
+                        <p-tag [value]="order.status | uppercase" [severity]="getSeverity(order.status)"></p-tag>
+                    </td>
+                    <td>
+                        <p-button 
+                          *ngIf="order.status === 'pending' || order.status === 'paid'"
+                          label="Cancel" 
+                          icon="pi pi-times" 
+                          styleClass="p-button-danger p-button-sm"
+                          [text]="true"
+                          (onClick)="cancelOrder(order._id)">
+                        </p-button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+  </div>
+</div>

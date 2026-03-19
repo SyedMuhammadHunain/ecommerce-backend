@@ -67,9 +67,38 @@ export class CartService {
       .populate('items.productId')
       .lean();
 
+
     // Store in cache (even null so we don't keep querying)
     await this.cacheManager.set(cacheKey, cart);
 
+    return cart;
+  }
+
+  async removeFromCart(userId: string, productId: string) {
+    const objectUserId = new Types.ObjectId(userId);
+    const objectProductId = new Types.ObjectId(productId);
+    
+    // Find doc and pull the exact productId from items
+    const cart = await this.cartModel.findOneAndUpdate(
+      { userId: objectUserId },
+      { $pull: { items: { productId: objectProductId } } },
+      { new: true }
+    ).populate('items.productId').lean();
+
+    await this.cacheManager.del(this.cartCacheKey(userId));
+    return cart;
+  }
+
+  async clearCart(userId: string) {
+    const objectUserId = new Types.ObjectId(userId);
+
+    const cart = await this.cartModel.findOneAndUpdate(
+      { userId: objectUserId },
+      { $set: { items: [] } },
+      { new: true }
+    ).lean();
+
+    await this.cacheManager.del(this.cartCacheKey(userId));
     return cart;
   }
 }

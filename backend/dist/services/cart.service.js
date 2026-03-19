@@ -69,6 +69,19 @@ let CartService = CartService_1 = class CartService {
         await this.cacheManager.set(cacheKey, cart);
         return cart;
     }
+    async removeFromCart(userId, productId) {
+        const objectUserId = new mongoose_2.Types.ObjectId(userId);
+        const objectProductId = new mongoose_2.Types.ObjectId(productId);
+        const cart = await this.cartModel.findOneAndUpdate({ userId: objectUserId }, { $pull: { items: { productId: objectProductId } } }, { new: true }).populate('items.productId').lean();
+        await this.cacheManager.del(this.cartCacheKey(userId));
+        return cart;
+    }
+    async clearCart(userId) {
+        const objectUserId = new mongoose_2.Types.ObjectId(userId);
+        const cart = await this.cartModel.findOneAndUpdate({ userId: objectUserId }, { $set: { items: [] } }, { new: true }).lean();
+        await this.cacheManager.del(this.cartCacheKey(userId));
+        return cart;
+    }
 };
 exports.CartService = CartService;
 exports.CartService = CartService = CartService_1 = __decorate([
