@@ -28,83 +28,61 @@ import { MessageService } from 'primeng/api';
     ToastModule
   ],
   template: `
-    <div class="flex align-items-center justify-content-center h-screen bg-gray-100">
+    <div class="flex items-center justify-center min-h-screen bg-gray-50">
       <p-toast></p-toast>
       <p-card header="Welcome Back" subheader="Sign in to continue" [style]="{width: '400px', padding: '1rem'}">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-column gap-3">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
           
-          <div class="field">
-            <label for="email" class="block mb-2">Email</label>
+          <div class="flex flex-col">
+            <label for="email" class="block mb-2 font-medium text-gray-700">Email</label>
             <input 
               id="email" 
               type="email" 
               pInputText 
               formControlName="email" 
-              class="w-full mb-1" 
+              class="w-full" 
               autofocus />
-            <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.dirty">
+            <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.dirty" class="mt-1">
               <p-message severity="error" text="Valid email is required"></p-message>
             </div>
           </div>
 
-          <div class="field">
-            <label for="password" class="block mb-2">Password</label>
+          <div class="flex flex-col">
+            <label for="password" class="block mb-2 font-medium text-gray-700">Password</label>
             <p-password 
               id="password" 
               formControlName="password" 
               [toggleMask]="true" 
               [feedback]="false"
               styleClass="w-full"
-              inputStyleClass="w-full mb-1">
+              inputStyleClass="w-full">
             </p-password>
-            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.dirty">
+            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.dirty" class="mt-1">
               <p-message severity="error" text="Password is required"></p-message>
             </div>
           </div>
 
-          <div class="flex justify-content-between align-items-center mb-4 mt-2">
-             <a routerLink="/auth/forgot-password" class="text-primary no-underline font-medium">Forgot Password?</a>
+          <div class="flex justify-between items-center mt-2 mb-4">
+             <a routerLink="/auth/forgot-password" class="text-blue-600 hover:text-blue-700 no-underline font-medium transition-colors">Forgot Password?</a>
           </div>
 
           <p-button 
             type="submit" 
             label="Log In" 
             icon="pi pi-sign-in" 
-            styleClass="w-full p-button-primary mb-3"
+            styleClass="w-full bg-blue-600 hover:bg-blue-700 border-none shadow-none text-white py-2 transition-colors mb-4"
             [disabled]="loginForm.invalid || authService.isAuthLoading()">
           </p-button>
           
-          <div class="text-center">
-            <span class="text-color-secondary">Don't have an account? </span>
-            <a routerLink="/auth/signup" class="text-primary no-underline font-medium">Sign up</a>
+          <div class="text-center text-gray-500">
+            <span>Don't have an account? </span>
+            <a routerLink="/auth/signup" class="text-blue-600 hover:text-blue-700 no-underline font-medium transition-colors">Sign up</a>
           </div>
         </form>
       </p-card>
     </div>
   `,
-  providers: [MessageService],
-  styles: [`
-    .h-screen { min-height: 100vh; }
-    .flex { display: flex; }
-    .flex-column { flex-direction: column; }
-    .align-items-center { align-items: center; }
-    .justify-content-center { justify-content: center; }
-    .justify-content-between { justify-content: space-between; }
-    .w-full { width: 100%; }
-    .mb-1 { margin-bottom: 0.25rem; }
-    .mb-2 { margin-bottom: 0.5rem; }
-    .mb-3 { margin-bottom: 1rem; }
-    .mb-4 { margin-bottom: 1.5rem; }
-    .mt-2 { margin-top: 0.5rem; }
-    .block { display: block; }
-    .text-center { text-align: center; }
-    .text-primary { color: var(--primary-color); }
-    .text-color-secondary { color: var(--text-color-secondary); }
-    .no-underline { text-decoration: none; }
-    .font-medium { font-weight: 500; }
-    .gap-3 { gap: 1rem; }
-    .bg-gray-100 { background-color: #f3f4f6; }
-  `]
+  providers: [MessageService]
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
