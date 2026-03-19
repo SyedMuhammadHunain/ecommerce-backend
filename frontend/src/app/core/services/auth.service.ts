@@ -31,7 +31,7 @@ export class AuthService {
           this.currentUser.set({
             id: decoded.id || decoded.sub,
             email: decoded.email,
-            role: decoded.role,
+            role: decoded.role?.toUpperCase(),
             name: decoded.name
           });
           this.isAuthenticated.set(true);
@@ -75,13 +75,13 @@ export class AuthService {
         this.currentUser.set({
             id: decoded.id || decoded.sub,
             email: decoded.email,
-            role: decoded.role,
+            role: decoded.role?.toUpperCase(),
             name: decoded.name
         });
         
         this.isAuthenticated.set(true);
         this.isAuthLoading.set(false);
-        this.routeBasedOnRole(decoded.role);
+        this.routeBasedOnRole(decoded.role?.toUpperCase());
       }),
       catchError(error => {
         this.isAuthLoading.set(false);
@@ -113,7 +113,7 @@ export class AuthService {
         this.currentUser.set({
             id: decoded.id || decoded.sub,
             email: decoded.email,
-            role: decoded.role,
+            role: decoded.role?.toUpperCase(),
             name: decoded.name
         });
       }),
