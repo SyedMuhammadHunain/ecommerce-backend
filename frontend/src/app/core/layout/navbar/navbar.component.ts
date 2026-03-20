@@ -83,7 +83,7 @@ export class NavbarComponent implements OnInit {
           { label: 'Clothing' },
           { label: 'Home & Living' }
       ]},
-      { label: 'Become a Seller', icon: 'pi pi-fw pi-star' },
+      { label: 'Become a Seller', icon: 'pi pi-fw pi-star', command: () => this.becomeSeller() },
       { label: 'My Orders', icon: 'pi pi-fw pi-box', routerLink: ['/orders'] }
     ];
   });
@@ -97,6 +97,13 @@ export class NavbarComponent implements OnInit {
 
   goToCart() {
     this.router.navigate(['/cart']);
+  }
+
+  becomeSeller() {
+    this.authService.becomeSeller().subscribe({
+      next: () => {},
+      error: (err) => console.error('Failed to upgrade to seller', err)
+    });
   }
 
   logout() {

@@ -136,6 +136,28 @@ export class AuthService {
     return this.http.patch(`${this.apiUrl}/reset-password/${token}`, data);
   }
 
+  public becomeSeller(): Observable<any> {
+    return this.http.post<any>('http://localhost:3000/user/become-seller', {}).pipe(
+      tap((res) => {
+        localStorage.setItem('access_token', res.accessToken);
+        localStorage.setItem('refresh_token', res.refreshToken);
+        
+        const decoded = jwtDecode<any>(res.accessToken);
+        this.currentUser.set({
+            id: decoded.id || decoded.sub,
+            email: decoded.email,
+            role: decoded.role?.toUpperCase(),
+            name: decoded.name
+        });
+        
+        this.routeBasedOnRole(decoded.role?.toUpperCase());
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
+
   public logout() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');

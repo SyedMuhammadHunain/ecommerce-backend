@@ -34,7 +34,9 @@ export class OrderService {
 
   /** Invalidate all order-related cache entries for a user */
   private async invalidateUserOrdersCache(userId: string): Promise<void> {
-    await this.cacheManager.del(this.userOrdersCacheKey(userId));
+    await this.cacheManager.del(`${this.userOrdersCacheKey(userId)}_sall`);
+    await this.cacheManager.del(`${this.userOrdersCacheKey(userId)}_spending`);
+    await this.cacheManager.del(`${this.userOrdersCacheKey(userId)}_spaid`);
     this.logger.log(`Orders cache invalidated for user ${userId}`);
   }
 

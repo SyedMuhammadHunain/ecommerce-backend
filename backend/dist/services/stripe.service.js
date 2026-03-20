@@ -54,9 +54,9 @@ let StripeService = StripeService_1 = class StripeService {
                 ],
                 mode: 'payment',
                 success_url: this.configService.get('STRIPE_SUCCESS_URL') ||
-                    'http://localhost:4242/success.html',
+                    'http://localhost:4200/home',
                 cancel_url: this.configService.get('STRIPE_CANCEL_URL') ||
-                    'http://localhost:4242/cancel.html',
+                    'http://localhost:4200/cancel.html',
                 metadata: {
                     orderId: order._id.toString(),
                     productId: productId,

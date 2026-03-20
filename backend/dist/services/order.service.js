@@ -34,7 +34,9 @@ let OrderService = OrderService_1 = class OrderService {
         return `order_${orderId}`;
     }
     async invalidateUserOrdersCache(userId) {
-        await this.cacheManager.del(this.userOrdersCacheKey(userId));
+        await this.cacheManager.del(`${this.userOrdersCacheKey(userId)}_sall`);
+        await this.cacheManager.del(`${this.userOrdersCacheKey(userId)}_spending`);
+        await this.cacheManager.del(`${this.userOrdersCacheKey(userId)}_spaid`);
         this.logger.log(`Orders cache invalidated for user ${userId}`);
     }
     async invalidateOrderCache(orderId) {
