@@ -110,37 +110,60 @@ let StripeService = StripeService_1 = class StripeService {
     }
     async handleCheckoutSessionCompleted(session) {
         const orderId = session.metadata?.orderId;
-        if (!orderId) {
-            this.logger.warn(`checkout.session.completed event missing orderId in metadata. Session ID: ${session.id}`);
+        const orderIdsStr = session.metadata?.orderIds;
+        if (!orderId && !orderIdsStr) {
+            this.logger.warn(`checkout.session.completed event missing order ID(s) in metadata. Session ID: ${session.id}`);
             return;
         }
-        this.logger.log(`Payment completed for order ${orderId}, session ${session.id}`);
         try {
-            await this.orderService.updateOrderStatus(orderId, order_status_enum_1.OrderStatus.PAID);
-            if (session.payment_intent) {
-                await this.orderService.updateOrder(orderId, {
-                    paymentIntentId: session.payment_intent,
-                });
+            if (orderId) {
+                await this.orderService.updateOrderStatus(orderId, order_status_enum_1.OrderStatus.PAID);
+                if (session.payment_intent) {
+                    await this.orderService.updateOrder(orderId, {
+                        paymentIntentId: session.payment_intent,
+                    });
+                }
+                this.logger.log(`Order ${orderId} marked as PAID`);
             }
-            this.logger.log(`Order ${orderId} marked as PAID`);
+            if (orderIdsStr) {
+                const orderIds = JSON.parse(orderIdsStr);
+                for (const oId of orderIds) {
+                    await this.orderService.updateOrderStatus(oId, order_status_enum_1.OrderStatus.PAID);
+                    if (session.payment_intent) {
+                        await this.orderService.updateOrder(oId, {
+                            paymentIntentId: session.payment_intent,
+                        });
+                    }
+                    this.logger.log(`Order ${oId} marked as PAID`);
+                }
+            }
         }
         catch (error) {
-            this.logger.error(`Failed to update order ${orderId} after payment: ${error.message}`);
+            this.logger.error(`Failed to update order(s) after payment: ${error.message}`);
         }
     }
     async handleCheckoutSessionExpired(session) {
         const orderId = session.metadata?.orderId;
-        if (!orderId) {
-            this.logger.warn(`checkout.session.expired event missing orderId in metadata. Session ID: ${session.id}`);
+        const orderIdsStr = session.metadata?.orderIds;
+        if (!orderId && !orderIdsStr) {
+            this.logger.warn(`checkout.session.expired event missing order ID(s) in metadata. Session ID: ${session.id}`);
             return;
         }
-        this.logger.log(`Checkout session expired for order ${orderId}, session ${session.id}`);
         try {
-            await this.orderService.updateOrderStatus(orderId, order_status_enum_1.OrderStatus.CANCELLED);
-            this.logger.log(`Order ${orderId} marked as CANCELLED (session expired)`);
+            if (orderId) {
+                await this.orderService.updateOrderStatus(orderId, order_status_enum_1.OrderStatus.CANCELLED);
+                this.logger.log(`Order ${orderId} marked as CANCELLED (session expired)`);
+            }
+            if (orderIdsStr) {
+                const orderIds = JSON.parse(orderIdsStr);
+                for (const oId of orderIds) {
+                    await this.orderService.updateOrderStatus(oId, order_status_enum_1.OrderStatus.CANCELLED);
+                    this.logger.log(`Order ${oId} marked as CANCELLED (session expired)`);
+                }
+            }
         }
         catch (error) {
-            this.logger.error(`Failed to cancel order ${orderId} after session expiry: ${error.message}`);
+            this.logger.error(`Failed to cancel order(s) after session expiry: ${error.message}`);
         }
     }
 };

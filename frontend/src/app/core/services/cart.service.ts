@@ -59,6 +59,22 @@ export class CartService {
     );
   }
 
+  clearCart() {
+    this.loading.set(true);
+    return this.http.delete(`${this.apiUrl}/clear`).pipe(
+      tap(() => {
+        this.cart.set(null);
+        this.cartItemCount.set(0);
+        this.loading.set(false);
+      }),
+      catchError((error) => {
+        console.error('Failed to clear cart', error);
+        this.loading.set(false);
+        return of(null);
+      })
+    );
+  }
+
   private updateItemCount(cart: Cart | null) {
     if (cart && cart.items) {
       const count = cart.items.reduce((total, item) => total + item.quantity, 0);

@@ -11,4 +11,9 @@ export declare class CartController {
     }> & {
         __v: number;
     }) | null>;
+    clearCart(req: CustomRequest): Promise<(import("mongoose").FlattenMaps<Cart> & Required<{
+        _id: import("mongoose").Types.ObjectId;
+    }> & {
+        __v: number;
+    }) | null>;
 }

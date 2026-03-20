@@ -31,6 +31,10 @@ let CartController = class CartController {
         const userId = req.user.sub;
         return this.cartService.getCart(userId);
     }
+    clearCart(req) {
+        const userId = req.user.sub;
+        return this.cartService.clearCart(userId);
+    }
 };
 exports.CartController = CartController;
 __decorate([
@@ -50,6 +54,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], CartController.prototype, "getCart", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),
+    (0, common_1.Delete)('clear'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], CartController.prototype, "clearCart", null);
 exports.CartController = CartController = __decorate([
     (0, common_1.Controller)('cart'),
     __metadata("design:paramtypes", [cart_service_1.CartService])

@@ -11,5 +11,6 @@ export declare class CheckoutController {
         } & {
             __v: number;
         };
+        url: string | null;
     }>;
 }

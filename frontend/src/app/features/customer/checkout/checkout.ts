@@ -81,13 +81,19 @@ export class CheckoutComponent implements OnInit {
     };
 
     this.checkoutService.placeOrder(payload).subscribe({
-      next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order placed successfully!' });
+      next: (response: any) => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order placed successfully! Redirecting to payment...' });
         
+        // Clear the cart on frontend explicitly
+        this.cartService.clearCart().subscribe();
+
         // Let user see the success message
         setTimeout(() => {
-          // Typically we would empty the cart here or by calling a backend endpoint
-          this.router.navigate(['/home']);
+          if (response && response.url) {
+            window.location.href = response.url;
+          } else {
+            this.router.navigate(['/home']);
+          }
         }, 1500);
       },
       error: () => {
@@ -96,3 +102,4 @@ export class CheckoutComponent implements OnInit {
     });
   }
 }
+

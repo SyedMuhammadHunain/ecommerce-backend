@@ -13,6 +13,9 @@ const checkout_service_1 = require("../services/checkout.service");
 const checkout_controller_1 = require("../controllers/checkout.controller");
 const checkout_schema_1 = require("../models/checkout.schema");
 const auth_module_1 = require("../modules/auth.module");
+const order_module_1 = require("./order.module");
+const cart_module_1 = require("./cart.module");
+const config_1 = require("@nestjs/config");
 let CheckoutModule = class CheckoutModule {
 };
 exports.CheckoutModule = CheckoutModule;
@@ -23,6 +26,9 @@ exports.CheckoutModule = CheckoutModule = __decorate([
                 { name: checkout_schema_1.Checkout.name, schema: checkout_schema_1.CheckoutSchema },
             ]),
             (0, common_1.forwardRef)(() => auth_module_1.AuthModule),
+            order_module_1.OrderModule,
+            cart_module_1.CartModule,
+            config_1.ConfigModule,
         ],
         controllers: [checkout_controller_1.CheckoutController],
         providers: [checkout_service_1.CheckoutService],

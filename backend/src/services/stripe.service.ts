@@ -164,32 +164,43 @@ export class StripeService {
     session: Stripe.Checkout.Session,
   ) {
     const orderId = session.metadata?.orderId;
+    const orderIdsStr = session.metadata?.orderIds;
 
-    if (!orderId) {
+    if (!orderId && !orderIdsStr) {
       this.logger.warn(
-        `checkout.session.completed event missing orderId in metadata. Session ID: ${session.id}`,
+        `checkout.session.completed event missing order ID(s) in metadata. Session ID: ${session.id}`,
       );
       return;
     }
 
-    this.logger.log(
-      `Payment completed for order ${orderId}, session ${session.id}`,
-    );
-
     try {
-      await this.orderService.updateOrderStatus(orderId, OrderStatus.PAID);
-
-      // Also store the payment intent ID on the order for refund capability
-      if (session.payment_intent) {
-        await this.orderService.updateOrder(orderId, {
-          paymentIntentId: session.payment_intent as string,
-        });
+      if (orderId) {
+        // Single order (Buy Now)
+        await this.orderService.updateOrderStatus(orderId, OrderStatus.PAID);
+        if (session.payment_intent) {
+          await this.orderService.updateOrder(orderId, {
+            paymentIntentId: session.payment_intent as string,
+          });
+        }
+        this.logger.log(`Order ${orderId} marked as PAID`);
       }
 
-      this.logger.log(`Order ${orderId} marked as PAID`);
+      if (orderIdsStr) {
+        // Multiple orders (Cart Checkout)
+        const orderIds = JSON.parse(orderIdsStr);
+        for (const oId of orderIds) {
+          await this.orderService.updateOrderStatus(oId, OrderStatus.PAID);
+          if (session.payment_intent) {
+            await this.orderService.updateOrder(oId, {
+              paymentIntentId: session.payment_intent as string,
+            });
+          }
+          this.logger.log(`Order ${oId} marked as PAID`);
+        }
+      }
     } catch (error) {
       this.logger.error(
-        `Failed to update order ${orderId} after payment: ${error.message}`,
+        `Failed to update order(s) after payment: ${error.message}`,
       );
     }
   }
@@ -202,27 +213,30 @@ export class StripeService {
     session: Stripe.Checkout.Session,
   ) {
     const orderId = session.metadata?.orderId;
+    const orderIdsStr = session.metadata?.orderIds;
 
-    if (!orderId) {
+    if (!orderId && !orderIdsStr) {
       this.logger.warn(
-        `checkout.session.expired event missing orderId in metadata. Session ID: ${session.id}`,
+        `checkout.session.expired event missing order ID(s) in metadata. Session ID: ${session.id}`,
       );
       return;
     }
 
-    this.logger.log(
-      `Checkout session expired for order ${orderId}, session ${session.id}`,
-    );
-
     try {
-      await this.orderService.updateOrderStatus(
-        orderId,
-        OrderStatus.CANCELLED,
-      );
-      this.logger.log(`Order ${orderId} marked as CANCELLED (session expired)`);
+      if (orderId) {
+        await this.orderService.updateOrderStatus(orderId, OrderStatus.CANCELLED);
+        this.logger.log(`Order ${orderId} marked as CANCELLED (session expired)`);
+      }
+      if (orderIdsStr) {
+        const orderIds = JSON.parse(orderIdsStr);
+        for (const oId of orderIds) {
+          await this.orderService.updateOrderStatus(oId, OrderStatus.CANCELLED);
+          this.logger.log(`Order ${oId} marked as CANCELLED (session expired)`);
+        }
+      }
     } catch (error) {
       this.logger.error(
-        `Failed to cancel order ${orderId} after session expiry: ${error.message}`,
+        `Failed to cancel order(s) after session expiry: ${error.message}`,
       );
     }
   }

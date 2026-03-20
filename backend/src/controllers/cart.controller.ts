@@ -1,5 +1,5 @@
 // src/controllers/cart.controller.ts
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Req, UseGuards } from '@nestjs/common';
 import { CartService } from '../services/cart.service';
 import { AddToCartDto } from '../dtos/addToCart.dto';
 import { AuthGuard } from '../common/guards/jwt-auth.guard';
@@ -27,4 +27,12 @@ export class CartController {
     const userId = req.user.sub;
     return this.cartService.getCart(userId);
   }
+
+  @UseGuards(AuthGuard)
+  @Delete('clear')
+  clearCart(@Req() req: CustomRequest) {
+    const userId = req.user.sub;
+    return this.cartService.clearCart(userId);
+  }
 }
+

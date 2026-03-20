@@ -78,6 +78,7 @@ let OrderService = OrderService_1 = class OrderService {
         }
         const orders = await this.orderModel
             .find(filter)
+            .populate('productId', 'productName image price')
             .sort({ createdAt: -1 })
             .lean();
         await this.cacheManager.set(cacheKey, orders);
