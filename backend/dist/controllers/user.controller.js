@@ -16,9 +16,6 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("../services/user.service");
 const jwt_auth_guard_1 = require("../common/guards/jwt-auth.guard");
-const roles_guard_1 = require("../common/guards/roles.guard");
-const roles_decorator_1 = require("../common/decorators/roles.decorator");
-const roles_enums_1 = require("../enums/roles.enums");
 let UserController = class UserController {
     userService;
     constructor(userService) {
@@ -27,15 +24,6 @@ let UserController = class UserController {
     async becomeSeller(req) {
         const userId = req.user.sub;
         return this.userService.becomeSeller(userId);
-    }
-    async getCustomers() {
-        return this.userService.findAllCustomers();
-    }
-    async getSellers() {
-        return this.userService.findAllSellers();
-    }
-    async deleteUser(id) {
-        return this.userService.deleteUser(id);
     }
 };
 exports.UserController = UserController;
@@ -46,31 +34,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "becomeSeller", null);
-__decorate([
-    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)(roles_enums_1.Roles.ADMIN),
-    (0, common_1.Get)('customers'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "getCustomers", null);
-__decorate([
-    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)(roles_enums_1.Roles.ADMIN),
-    (0, common_1.Get)('sellers'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "getSellers", null);
-__decorate([
-    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)(roles_enums_1.Roles.ADMIN),
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "deleteUser", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.AuthGuard),

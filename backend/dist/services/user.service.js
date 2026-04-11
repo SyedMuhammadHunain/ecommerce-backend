@@ -63,19 +63,6 @@ let UserService = class UserService {
             refreshToken: rT,
         };
     }
-    async findAllCustomers() {
-        return this.userModel.find({ role: roles_enums_1.Roles.CUSTOMER }).select('-password').exec();
-    }
-    async findAllSellers() {
-        return this.userModel.find({ role: roles_enums_1.Roles.SELLER }).select('-password').exec();
-    }
-    async deleteUser(userId) {
-        const result = await this.userModel.findByIdAndDelete(userId).exec();
-        if (!result) {
-            throw new common_1.NotFoundException('User not found');
-        }
-        return { message: 'User deleted successfully' };
-    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([

@@ -73,20 +73,4 @@ export class UserService {
       refreshToken: rT,
     };
   }
-
-  async findAllCustomers(): Promise<User[]> {
-    return this.userModel.find({ role: Roles.CUSTOMER }).select('-password').exec();
-  }
-
-  async findAllSellers(): Promise<User[]> {
-    return this.userModel.find({ role: Roles.SELLER }).select('-password').exec();
-  }
-
-  async deleteUser(userId: string): Promise<any> {
-    const result = await this.userModel.findByIdAndDelete(userId).exec();
-    if (!result) {
-      throw new NotFoundException('User not found');
-    }
-    return { message: 'User deleted successfully' };
-  }
 }

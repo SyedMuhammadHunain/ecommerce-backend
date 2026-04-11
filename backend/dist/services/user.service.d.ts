@@ -12,7 +12,4 @@ export declare class UserService {
         accessToken: string;
         refreshToken: string;
     }>;
-    findAllCustomers(): Promise<User[]>;
-    findAllSellers(): Promise<User[]>;
-    deleteUser(userId: string): Promise<any>;
 }
