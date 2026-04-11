@@ -6,8 +6,10 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
   return () => {
     const authService = inject(AuthService);
     const router = inject(Router);
-    
+
     if (!authService.isAuthenticated()) {
+      if (allowedRoles.includes('ADMIN')) return router.parseUrl('/admin/login');
+      if (allowedRoles.includes('SELLER')) return router.parseUrl('/seller/login');
       return router.parseUrl('/login');
     }
 
@@ -16,6 +18,6 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
       return true;
     }
 
-    return router.parseUrl('/'); 
+    return router.parseUrl('/');
   };
 };

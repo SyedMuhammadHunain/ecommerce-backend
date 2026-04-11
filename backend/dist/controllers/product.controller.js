@@ -18,6 +18,7 @@ const product_dto_1 = require("../dtos/product.dto");
 const product_service_1 = require("../services/product.service");
 const jwt_auth_guard_1 = require("../common/guards/jwt-auth.guard");
 const roles_decorator_1 = require("../common/decorators/roles.decorator");
+const public_decorators_1 = require("../common/decorators/public.decorators");
 const roles_guard_1 = require("../common/guards/roles.guard");
 const updatedProduct_dto_1 = require("../dtos/updatedProduct.dto");
 let ProductController = class ProductController {
@@ -30,11 +31,11 @@ let ProductController = class ProductController {
         return this.productService.create(productDto, userId);
     }
     getAll(req) {
-        const userId = req.user.sub;
+        const userId = req.user?.sub;
         return this.productService.getAll(userId);
     }
     getById(productId, req) {
-        const userId = req.user.sub;
+        const userId = req.user?.sub;
         return this.productService.getById(productId, userId);
     }
     deleteById(id, req) {
@@ -58,7 +59,7 @@ __decorate([
 ], ProductController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, roles_decorator_1.Roles)('seller', 'customer'),
+    (0, public_decorators_1.Public)(),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -66,7 +67,7 @@ __decorate([
 ], ProductController.prototype, "getAll", null);
 __decorate([
     (0, common_1.Get)('/:id'),
-    (0, roles_decorator_1.Roles)('seller', 'customer'),
+    (0, public_decorators_1.Public)(),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),

@@ -33,14 +33,15 @@ let ProductService = ProductService_1 = class ProductService {
         this.cacheManager = cacheManager;
     }
     getAllCacheKey(userId) {
-        return `products_all_${userId}`;
+        return `products_all_${userId || 'public'}`;
     }
     getByIdCacheKey(productId, userId) {
-        return `product_${productId}_${userId}`;
+        return `product_${productId}_${userId || 'public'}`;
     }
     async invalidateProductCache(userId) {
         await this.cacheManager.del(this.getAllCacheKey(userId));
-        this.logger.log(`Cache invalidated for user ${userId}`);
+        await this.cacheManager.del(this.getAllCacheKey());
+        this.logger.log(`Cache invalidated for user ${userId} and public`);
     }
     async create(productDto, userId) {
         const user = await this.userModel.findById(userId).lean();
@@ -66,16 +67,21 @@ let ProductService = ProductService_1 = class ProductService {
             return cached;
         }
         this.logger.log(`Cache MISS for ${cacheKey}`);
-        const user = await this.userModel.findById(userId).lean();
-        if (!user) {
-            throw new common_1.NotFoundException('Account not found: User profile does not exist');
-        }
         let products = [];
-        if (user.role === roles_enums_1.Roles.SELLER) {
-            products = await this.productModel.find({ userId: user._id }).lean();
-        }
-        else if (user.role === roles_enums_1.Roles.CUSTOMER) {
+        if (!userId) {
             products = await this.productModel.find().lean();
+        }
+        else {
+            const user = await this.userModel.findById(userId).lean();
+            if (!user) {
+                throw new common_1.NotFoundException('Account not found: User profile does not exist');
+            }
+            if (user.role === roles_enums_1.Roles.SELLER) {
+                products = await this.productModel.find({ userId: user._id }).lean();
+            }
+            else if (user.role === roles_enums_1.Roles.CUSTOMER) {
+                products = await this.productModel.find().lean();
+            }
         }
         await this.cacheManager.set(cacheKey, products);
         return products;
@@ -88,28 +94,36 @@ let ProductService = ProductService_1 = class ProductService {
             return cached;
         }
         this.logger.log(`Cache MISS for ${cacheKey}`);
-        const user = await this.userModel.findById(userId).lean();
-        if (!user) {
-            throw new common_1.NotFoundException('Account not found: User profile does not exist');
-        }
         let product = null;
-        if (user.role === roles_enums_1.Roles.SELLER) {
-            product = await this.productModel.findById(productId).lean();
-            if (!product) {
-                throw new common_1.NotFoundException('Product not found: Item does not exist in catalog');
-            }
-            if (!product.userId || String(product.userId) !== userId) {
-                throw new common_1.UnauthorizedException('Access denied: You can only view your own product listings');
-            }
-        }
-        else if (user.role === roles_enums_1.Roles.CUSTOMER) {
+        if (!userId) {
             product = await this.productModel.findById(productId).lean();
             if (!product) {
                 throw new common_1.NotFoundException('Product not found: Item does not exist in catalog');
             }
         }
         else {
-            throw new common_1.UnauthorizedException('Access denied: Insufficient permissions to view product details');
+            const user = await this.userModel.findById(userId).lean();
+            if (!user) {
+                throw new common_1.NotFoundException('Account not found: User profile does not exist');
+            }
+            if (user.role === roles_enums_1.Roles.SELLER) {
+                product = await this.productModel.findById(productId).lean();
+                if (!product) {
+                    throw new common_1.NotFoundException('Product not found: Item does not exist in catalog');
+                }
+                if (!product.userId || String(product.userId) !== userId) {
+                    throw new common_1.UnauthorizedException('Access denied: You can only view your own product listings');
+                }
+            }
+            else if (user.role === roles_enums_1.Roles.CUSTOMER) {
+                product = await this.productModel.findById(productId).lean();
+                if (!product) {
+                    throw new common_1.NotFoundException('Product not found: Item does not exist in catalog');
+                }
+            }
+            else {
+                throw new common_1.UnauthorizedException('Access denied: Insufficient permissions to view product details');
+            }
         }
         await this.cacheManager.set(cacheKey, product);
         return product;

@@ -14,8 +14,8 @@ export declare class ProductService {
     private getByIdCacheKey;
     private invalidateProductCache;
     create(productDto: ProductDto, userId: string): Promise<Product>;
-    getAll(userId: string): Promise<Product[]>;
-    getById(productId: string, userId: string): Promise<Product>;
+    getAll(userId?: string): Promise<Product[]>;
+    getById(productId: string, userId?: string): Promise<Product>;
     deleteById(productId: string, userId: string): Promise<void>;
     update(productId: string, updatedProductDto: UpdatedProductDto, currentUserId: string): Promise<Product>;
 }

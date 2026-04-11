@@ -19,6 +19,7 @@ import { ProductService } from '../services/product.service';
 // import { UpdatedProductDto } from 'src/dtos/updatedProduct.dto';
 import { AuthGuard } from '../common/guards/jwt-auth.guard';
 import { Roles } from '../common/decorators/roles.decorator';
+import { Public } from '../common/decorators/public.decorators';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { UpdatedProductDto } from '../dtos/updatedProduct.dto';
 
@@ -35,16 +36,16 @@ export class ProductController {
   }
 
   @Get()
-  @Roles('seller', 'customer')
+  @Public()
   getAll(@Req() req: any): Promise<Product[]> {
-    const userId = req.user.sub;
+    const userId = req.user?.sub;
     return this.productService.getAll(userId);
   }
 
   @Get('/:id')
-  @Roles('seller', 'customer')
+  @Public()
   getById(@Param('id') productId: string, @Req() req: any): Promise<Product> {
-    const userId = req.user.sub;
+    const userId = req.user?.sub;
     return this.productService.getById(productId, userId);
   }
 
