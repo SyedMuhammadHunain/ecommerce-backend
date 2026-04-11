@@ -5,6 +5,8 @@ import { ProductService } from '../../core/services/product.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Product } from '../../core/models/product.interface';
 import { TopbarWidget } from './components/topbarwidget.component';
+import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-landing',
@@ -13,6 +15,8 @@ import { TopbarWidget } from './components/topbarwidget.component';
     CommonModule,
     RouterModule,
     TopbarWidget,
+    ButtonModule,
+    ProgressSpinnerModule
   ],
   template: `
     <div class="min-h-screen flex flex-col bg-white">
@@ -27,8 +31,8 @@ import { TopbarWidget } from './components/topbarwidget.component';
             <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-4 max-w-xl" style="letter-spacing: -0.44px;">Find your next <br>great tech discovery</h1>
             <p class="text-xl md:text-2xl mb-8 font-medium">Join thousands of buyers and sellers on finconnect.</p>
             <div class="flex gap-4">
-              <button class="airbnb-radius-button bg-[var(--palette-bg-primary-core)] text-white px-6 py-3 font-semibold text-base hover:bg-[var(--palette-bg-tertiary-core)] transition-colors inline-block text-center border-none cursor-pointer" (click)="handleCtaClick()">Start Shopping</button>
-              <button class="airbnb-radius-button bg-white text-[var(--palette-text-primary)] px-6 py-3 font-semibold text-base hover:bg-gray-50 transition-colors inline-block text-center border-none cursor-pointer" (click)="handleCtaClick()">Become a Seller</button>
+              <p-button label="Start Shopping" styleClass="airbnb-radius-button bg-[var(--palette-bg-primary-core)] text-white px-6 py-3 font-semibold text-base hover:bg-[var(--palette-bg-tertiary-core)] transition-colors inline-block text-center border-none cursor-pointer" (onClick)="handleCtaClick()"></p-button>
+              <p-button label="Become a Seller" styleClass="airbnb-radius-button bg-white text-[var(--palette-text-primary)] px-6 py-3 font-semibold text-base hover:bg-gray-50 transition-colors inline-block text-center border-none cursor-pointer" (onClick)="handleCtaClick()"></p-button>
             </div>
           </div>
         </div>
@@ -69,9 +73,117 @@ import { TopbarWidget } from './components/topbarwidget.component';
             <p class="text-[var(--palette-text-secondary)] mt-2">Our sellers haven't stocked the shelves yet. Check back soon!</p>
           </div>
 
-          <div *ngIf="isLoading" class="col-span-full text-center py-20">
-            <i class="pi pi-spin pi-spinner text-[var(--palette-bg-primary-core)] text-4xl"></i>
+          <div *ngIf="isLoading" class="col-span-full text-center py-20 flex justify-center items-center">
+            <p-progressSpinner styleClass="w-12 h-12" strokeWidth="4" animationDuration=".5s"></p-progressSpinner>
           </div>
+        </div>
+      </div>
+      
+      <!-- Trusted By Section -->
+      <div class="bg-gray-50 py-16 px-6 md:px-10 lg:px-20 border-t border-[var(--palette-border-gray)]">
+         <div class="max-w-[1920px] mx-auto text-center">
+            <h2 class="text-sm font-semibold text-[var(--palette-text-secondary)] tracking-widest uppercase mb-8">Trusted by innovative teams worldwide</h2>
+            <div class="flex flex-wrap justify-center items-center gap-10 md:gap-20 text-gray-400">
+               <div class="flex items-center gap-2 hover:text-gray-600 transition-colors cursor-pointer"><i class="pi pi-google text-3xl"></i><span class="text-xl font-bold">Google</span></div>
+               <div class="flex items-center gap-2 hover:text-gray-600 transition-colors cursor-pointer"><i class="pi pi-apple text-3xl"></i><span class="text-xl font-bold">Apple</span></div>
+               <div class="flex items-center gap-2 hover:text-gray-600 transition-colors cursor-pointer"><i class="pi pi-amazon text-3xl"></i><span class="text-xl font-bold">Amazon</span></div>
+               <div class="flex items-center gap-2 hover:text-gray-600 transition-colors cursor-pointer"><i class="pi pi-paypal text-3xl"></i><span class="text-xl font-bold">PayPal</span></div>
+               <div class="flex items-center gap-2 hover:text-gray-600 transition-colors cursor-pointer"><i class="pi pi-discord text-3xl"></i><span class="text-xl font-bold">Discord</span></div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Testimonials Section -->
+      <div class="px-6 md:px-10 lg:px-20 py-20 mx-auto w-full max-w-[1920px]">
+        <div class="mb-12 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--palette-text-primary)] mb-4" style="letter-spacing: -0.44px;">What our users are saying</h2>
+            <p class="text-[var(--palette-text-secondary)] text-lg max-w-2xl mx-auto">Join thousands of satisfied customers who have revolutionized their shopping experience with us.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+           <div class="bg-white p-8 rounded-2xl border border-[var(--palette-border-gray)] shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex items-center mb-4 text-emerald-500">
+                 <i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm"></i>
+              </div>
+              <p class="text-[var(--palette-text-primary)] text-lg mb-6 leading-relaxed">"The best e-commerce platform I've ever used. The interface is clean, discovering new tech is a breeze, and purchasing is seamless."</p>
+              <div class="flex items-center gap-4">
+                 <div class="w-12 h-12 rounded-full bg-[var(--palette-bg-primary-core)]/10 flex items-center justify-center text-[var(--palette-bg-primary-core)] font-bold text-xl">S</div>
+                 <div>
+                    <h4 class="font-semibold text-[var(--palette-text-primary)]">Sarah Jenkins</h4>
+                    <p class="text-sm text-[var(--palette-text-secondary)]">Tech Enthusiast</p>
+                 </div>
+              </div>
+           </div>
+
+           <div class="bg-white p-8 rounded-2xl border border-[var(--palette-border-gray)] shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex items-center mb-4 text-emerald-500">
+                 <i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm"></i>
+              </div>
+              <p class="text-[var(--palette-text-primary)] text-lg mb-6 leading-relaxed">"As a seller, I've seen my sales triple since joining. The audience is highly engaged and the seller tools are incredibly intuitive."</p>
+              <div class="flex items-center gap-4">
+                 <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xl">M</div>
+                 <div>
+                    <h4 class="font-semibold text-[var(--palette-text-primary)]">Michael Chen</h4>
+                    <p class="text-sm text-[var(--palette-text-secondary)]">Top Rated Seller</p>
+                 </div>
+              </div>
+           </div>
+
+           <div class="bg-white p-8 rounded-2xl border border-[var(--palette-border-gray)] shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex items-center mb-4 text-emerald-500">
+                 <i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm"></i>
+              </div>
+              <p class="text-[var(--palette-text-primary)] text-lg mb-6 leading-relaxed">"Finconnect has completely changed how I shop for gadgets. The community aspect and detailed reviews make every purchase secure."</p>
+              <div class="flex items-center gap-4">
+                 <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xl">E</div>
+                 <div>
+                    <h4 class="font-semibold text-[var(--palette-text-primary)]">Emily Rodriguez</h4>
+                    <p class="text-sm text-[var(--palette-text-secondary)]">Verified Buyer</p>
+                 </div>
+              </div>
+           </div>
+
+           <div class="bg-white p-8 rounded-2xl border border-[var(--palette-border-gray)] shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex items-center mb-4 text-emerald-500">
+                 <i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm"></i>
+              </div>
+              <p class="text-[var(--palette-text-primary)] text-lg mb-6 leading-relaxed">"Amazing platform with an incredible selection of tech products. The customer support is top-notch and always helpful!"</p>
+              <div class="flex items-center gap-4">
+                 <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xl">A</div>
+                 <div>
+                    <h4 class="font-semibold text-[var(--palette-text-primary)]">Alex Johnson</h4>
+                    <p class="text-sm text-[var(--palette-text-secondary)]">Tech Blogger</p>
+                 </div>
+              </div>
+           </div>
+
+           <div class="bg-white p-8 rounded-2xl border border-[var(--palette-border-gray)] shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex items-center mb-4 text-emerald-500">
+                 <i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm"></i>
+              </div>
+              <p class="text-[var(--palette-text-primary)] text-lg mb-6 leading-relaxed">"Selling my old electronics has never been easier. The interface is clean and payouts are super fast."</p>
+              <div class="flex items-center gap-4">
+                 <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold text-xl">R</div>
+                 <div>
+                    <h4 class="font-semibold text-[var(--palette-text-primary)]">Robert Davis</h4>
+                    <p class="text-sm text-[var(--palette-text-secondary)]">Occasional Seller</p>
+                 </div>
+              </div>
+           </div>
+
+           <div class="bg-white p-8 rounded-2xl border border-[var(--palette-border-gray)] shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex items-center mb-4 text-emerald-500">
+                 <i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm mr-1"></i><i class="pi pi-star-fill text-sm"></i>
+              </div>
+              <p class="text-[var(--palette-text-primary)] text-lg mb-6 leading-relaxed">"The buyer protection gives me peace of mind. I've bought multiple high-end gadgets without a single issue."</p>
+              <div class="flex items-center gap-4">
+                 <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold text-xl">L</div>
+                 <div>
+                    <h4 class="font-semibold text-[var(--palette-text-primary)]">Lisa Wong</h4>
+                    <p class="text-sm text-[var(--palette-text-secondary)]">Power Buyer</p>
+                 </div>
+              </div>
+           </div>
         </div>
       </div>
       
